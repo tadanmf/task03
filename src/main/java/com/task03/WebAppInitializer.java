@@ -18,12 +18,12 @@ public class WebAppInitializer implements WebApplicationInitializer {
 
 	Logger log = LoggerFactory.getLogger(WebAppInitializer.class);
 	
+
 	@Bean
 	public CharacterEncodingFilter characterEncodingFilter() {
 		final CharacterEncodingFilter characterEncodingFilter = new CharacterEncodingFilter();
 		characterEncodingFilter.setEncoding("UTF-8");
 		characterEncodingFilter.setForceEncoding(true);
-		
 		return characterEncodingFilter;
 	}
 
