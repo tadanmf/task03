@@ -158,6 +158,12 @@
 			.modal('show')
 		;
 	};
+	
+	function do_login() {
+		console.log("do_login()");
+		
+		$('#login_form').submit();
+	}
 </script>
 <title>__' ___</title>
 </head>
@@ -220,6 +226,7 @@
 									</div>
 								</div>
 							</div>
+							<div class="padding_10"></div>
 							<div class="sec_comment">
 								<div class="ui minimal comments">
 									<div class="comment">
@@ -254,7 +261,7 @@
 				</div>
 				<div class="aside">
 					<div class="aside_tag">
-						<div class="ui raised segment">
+						<div class="ui segment">
 							<div class="ui header">tag</div>
 							<c:forEach begin="1" end="10" var="i">
 								<a class="ui tag label">tag ${ i }</a>
@@ -264,7 +271,7 @@
 					<div class="margin_10"></div>
 					<div class="aside_stat">
 						<div class="stat_content">
-							<div class="ui raised segment">
+							<div class="ui segment">
 								<div class="ui header">content top 5</div>
 								<c:forEach begin="1" end="5" var="i">
 									<div class="ui label">작성자 ${ i }</div>
@@ -273,7 +280,7 @@
 						</div>
 						<div class="margin_10"></div>
 						<div class="stat_comment">
-							<div class="ui raised segment">
+							<div class="ui segment">
 								<div class="ui header">comment top 5</div>
 								<c:forEach begin="1" end="5" var="i">
 									<div class="ui label">댓쓴이 ${ i }</div>
@@ -290,7 +297,7 @@
 	  <i class="close icon"></i>
 	  <div class="header">글쓰기</div>
 	  <div class="content">
-	  	<form class="ui form">
+	  	<form class="ui form" name="write_form" method="post">
 		  <div class="field">
 		    <input type="text" name="title" placeholder="제목을 입력하세요." required="required">
 		  </div>
@@ -309,7 +316,7 @@
 	  <i class="close icon"></i>
 	  <div class="header">로그인</div>
 	  <div class="content">
-	  	<form class="ui form">
+	  	<form class="ui form" name="login_form" method="post" id="login_form" action="${ pageContext.request.contextPath }/login">
 		  <div class="field">
 		    <input type="text" name="id" placeholder="아이디를 입력하세요." required="required">
 		  </div>
@@ -319,7 +326,7 @@
 		</form>
 	  </div>
 	  <div class="actions">
-	    <div class="ui black deny button">로그인</div>
+	    <div class="ui black deny button" onclick="do_login();">로그인</div>
 	  </div>
 	</div>
 	<!-- 로그인 모달 -->
@@ -328,7 +335,7 @@
 	  <i class="close icon"></i>
 	  <div class="header">가입</div>
 	  <div class="content">
-	  	<form class="ui form">
+	  	<form class="ui form" name="signup_form" method="post">
 		  <div class="field">
 		    <input type="text" name="id" placeholder="아이디를 입력하세요." required="required">
 		  </div>

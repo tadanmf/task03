@@ -2,10 +2,11 @@ package com.task03.member.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.task03.member.service.MemberService;
+import com.task03.member.vo.MemberVO;
 
 @Controller
 public class MemberController {
@@ -15,9 +16,12 @@ public class MemberController {
 	
 	/* 로그인 */
 	@RequestMapping("/login")
-	public String doLogin(Model model) {
-		System.out.println("asf");
-//		service.selectLoginList();
+	public String doLogin(@ModelAttribute MemberVO member) {
+		System.out.println(member);
+		
+		service.doLogin();
+		
+		
 		return "test";
 	}
 

@@ -30,11 +30,11 @@ public class WebAppInitializer implements WebApplicationInitializer {
 		System.out.println("건강검진 안뇽~");
 		log.info("스프링 시작1");
 		
-		AnnotationConfigWebApplicationContext ctx = new AnnotationConfigWebApplicationContext();
-		ctx.register(WebConfig.class);
-		ctx.setServletContext(servletContext);
+		AnnotationConfigWebApplicationContext rootContext = new AnnotationConfigWebApplicationContext();
+		rootContext.register(RootConfig.class);
+		rootContext.setServletContext(servletContext);
 
-		ServletRegistration.Dynamic servlet = servletContext.addServlet("dispatcher", new DispatcherServlet(ctx));
+		ServletRegistration.Dynamic servlet = servletContext.addServlet("dispatcher", new DispatcherServlet(rootContext));
 
 		servlet.setLoadOnStartup(1);
 		servlet.addMapping("/");
