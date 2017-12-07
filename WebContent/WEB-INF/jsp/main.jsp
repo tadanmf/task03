@@ -179,6 +179,9 @@
 	function do_signup() {
 		$('#signup_form').submit();
 	}
+	function do_write() {
+		$('#write_form').submit();
+	}
 </script>
 <title>__' ___</title>
 </head>
@@ -320,7 +323,7 @@
 	  <i class="close icon"></i>
 	  <div class="header">글쓰기</div>
 	  <div class="content">
-	  	<form class="ui form" id="write_form" method="post">
+	  	<form class="ui form" id="write_form" method="post" action="${ pageContext.request.contextPath }/write">
 		  <div class="field">
 		    <input type="text" name="title" placeholder="제목을 입력하세요." required="required">
 		  </div>
@@ -330,7 +333,7 @@
 		</form>
 	  </div>
 	  <div class="actions">
-	    <div class="ui black deny button">등록</div>
+	    <div class="ui black deny button" onclick="do_write();">등록</div>
 	  </div>
 	</div>
 	<!-- 글쓰기 모달 -->

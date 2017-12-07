@@ -10,6 +10,15 @@ public class MainController {
 	@RequestMapping(path = {"/main", "/"}, method = RequestMethod.GET)
 	public String goMain() {
 		
+		/* 글 목록 */
+		/* 글 목록 */
+		
+		/* 태그 목록 */
+		/* 태그 목록 */
+		
+		/* 통계 */
+		/* 통계 */
+		
 		return "main";
 	}
 

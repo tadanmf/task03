@@ -8,17 +8,19 @@ public class ContentVO {
 	private String content;
 	private String m_id;
 	private String m_nick;
+	private int m_idx;
 	private Timestamp date;
 	
 	public ContentVO() {}
 
-	public ContentVO(int idx, String title, String content, String m_id, String m_nick, Timestamp date) {
+	public ContentVO(int idx, String title, String content, String m_id, String m_nick, int m_idx, Timestamp date) {
 		super();
 		this.idx = idx;
 		this.title = title;
 		this.content = content;
 		this.m_id = m_id;
 		this.m_nick = m_nick;
+		this.m_idx = m_idx;
 		this.date = date;
 	}
 
@@ -60,6 +62,14 @@ public class ContentVO {
 
 	public void setM_nick(String m_nick) {
 		this.m_nick = m_nick;
+	}
+
+	public int getM_idx() {
+		return m_idx;
+	}
+
+	public void setM_idx(int m_idx) {
+		this.m_idx = m_idx;
 	}
 
 	public Timestamp getDate() {
