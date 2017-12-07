@@ -1,0 +1,3 @@
+[main] DEBUG org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate  - id: admin
+[main] DEBUG org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate  - template: null
+[main] DEBUG org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate  - dataSource: null
