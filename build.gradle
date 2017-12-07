@@ -43,7 +43,9 @@ dependencies {
 	compile group: 'org.springframework', name: 'spring-webmvc', version: '4.3.13.RELEASE'
 	compile group: 'org.springframework', name: 'spring-jdbc', version: '4.3.13.RELEASE'
 	
-	
+	// https://mvnrepository.com/artifact/com.google.guava/guava
+	compile group: 'com.google.guava', name: 'guava', version: '23.5-jre'
+	compile 'com.google.code.gson:gson:2.4'
     
     // https://mvnrepository.com/artifact/javax.servlet/javax.servlet-api
     providedCompile group: 'org.projectlombok', name: 'lombok', version: '1.16.18'

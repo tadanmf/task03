@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 @Controller
 public class MainController {
 	
-	@RequestMapping(path = "/main", method = RequestMethod.GET)
+	@RequestMapping(path = {"/main", "/"}, method = RequestMethod.GET)
 	public String goMain() {
 		
 		return "main";

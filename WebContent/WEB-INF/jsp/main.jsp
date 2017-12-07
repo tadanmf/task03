@@ -159,10 +159,25 @@
 		;
 	};
 	
+	function modal_logout() {
+		$('.mini.modal.logout')
+			.modal({blurring: true})
+			.modal('show')
+		;
+	};
+	
 	function do_login() {
 		console.log("do_login()");
 		
 		$('#login_form').submit();
+	}
+	
+	function do_logout() {
+		location.href = '${ pageContext.request.contextPath }/logout';
+	}
+	
+	function do_signup() {
+		$('#signup_form').submit();
 	}
 </script>
 <title>__' ___</title>
@@ -172,8 +187,16 @@
 		<div class="container">
 			<div class="head">
 				<div class="user">
-					<button class="ui left attached button" onclick="modal_login();">login</button>
-					<button class="right attached ui button" onclick="modal_signup();">signup</button>
+					<c:choose>
+						<c:when test="${ member != null }">
+							${ member.nick } 님
+							<button class="ui button" onclick="modal_logout();">logout</button>
+						</c:when>
+						<c:otherwise>
+							<button class="ui left attached button" onclick="modal_login();">login</button>
+							<button class="right attached ui button" onclick="modal_signup();">signup</button>
+						</c:otherwise>
+					</c:choose>
 				</div>
 			</div>
 			<div class="contents">
@@ -335,7 +358,7 @@
 	  <i class="close icon"></i>
 	  <div class="header">가입</div>
 	  <div class="content">
-	  	<form class="ui form" name="signup_form" method="post">
+	  	<form class="ui form" name="signup_form" method="post" action="${ pageContext.request.contextPath }/signup">
 		  <div class="field">
 		    <input type="text" name="id" placeholder="아이디를 입력하세요." required="required">
 		  </div>
@@ -348,9 +371,21 @@
 		</form>
 	  </div>
 	  <div class="actions">
-	    <div class="ui black deny button">가입</div>
+	    <div class="ui black deny button" onclick="do_signup();">가입</div>
 	  </div>
 	</div>
 	<!-- 가입 모달 -->
+	<!-- 로그아웃 모달 -->
+	<div class="ui modal mini logout">
+	  <i class="close icon"></i>
+	  <div class="header">로그아웃</div>
+	  <div class="content">
+	  	정말 로그아웃 하시겠습니까
+	  </div>
+	  <div class="actions">
+	    <div class="ui black deny button" onclick="do_logout();">네</div>
+	  </div>
+	</div>
+	<!-- 로그아웃 모달 -->
 </body>
 </html>
