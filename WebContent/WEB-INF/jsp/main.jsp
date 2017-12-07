@@ -1,3 +1,4 @@
+<%@page import="com.task03.member.vo.MemberVO"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
@@ -139,10 +140,14 @@
 	});
 	
 	function modal_write() {
-		$('.small.modal.write')
-			.modal({blurring: true})
-			.modal('show')
-		;
+		if(<%= (MemberVO)session.getAttribute("member") != null %>) {
+			$('.small.modal.write')
+				.modal({blurring: true})
+				.modal('show')
+			;
+		} else {
+			alert("로그인 하세요");
+		}
 	};
 	
 	function modal_login() {
@@ -229,13 +234,12 @@
 							</h4>
 						</div>
 					</div>
-					<c:forEach begin="0" end="5">
+					<c:forEach items="${ contentList }" var="content" >
 						<div class="ui segment section padded vertical"  style="border-bottom: #EBEBEB solid 1px;">
 							<div class="sec_content">
 								<div class="ui vertical segment">
 									<div class="column con_head">
-										<div class="ui medium header">글
-											제목</div>
+										<div class="ui medium header">${ content.title }</div>
 										<div class="sub header">2017. 12. 5</div>
 										<div class="sub header">대장</div>
 									</div>
