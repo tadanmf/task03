@@ -320,7 +320,7 @@
 	  <i class="close icon"></i>
 	  <div class="header">글쓰기</div>
 	  <div class="content">
-	  	<form class="ui form" name="write_form" method="post">
+	  	<form class="ui form" id="write_form" method="post">
 		  <div class="field">
 		    <input type="text" name="title" placeholder="제목을 입력하세요." required="required">
 		  </div>
@@ -339,7 +339,7 @@
 	  <i class="close icon"></i>
 	  <div class="header">로그인</div>
 	  <div class="content">
-	  	<form class="ui form" name="login_form" method="post" id="login_form" action="${ pageContext.request.contextPath }/login">
+	  	<form class="ui form" id="login_form" method="post" action="${ pageContext.request.contextPath }/login">
 		  <div class="field">
 		    <input type="text" name="id" placeholder="아이디를 입력하세요." required="required">
 		  </div>
@@ -358,7 +358,7 @@
 	  <i class="close icon"></i>
 	  <div class="header">가입</div>
 	  <div class="content">
-	  	<form class="ui form" name="signup_form" method="post" action="${ pageContext.request.contextPath }/signup">
+	  	<form class="ui form" id="signup_form" method="post" action="${ pageContext.request.contextPath }/signup">
 		  <div class="field">
 		    <input type="text" name="id" placeholder="아이디를 입력하세요." required="required">
 		  </div>
@@ -366,7 +366,7 @@
 		    <input type="text" name="pw" placeholder="비밀번호를 입력하세요." required="required">
 		  </div>
 		  <div class="field">
-		    <input type="text" name="nick" placeholder="닉네임을 입력하세요.">
+		    <input type="text" name="nick" placeholder="닉네임을 입력하세요." required="required">
 		  </div>
 		</form>
 	  </div>

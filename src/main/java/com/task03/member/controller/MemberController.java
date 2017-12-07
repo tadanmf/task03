@@ -23,7 +23,6 @@ public class MemberController {
 	@Autowired
 	private MemberService service;
 	
-	
 	@RequestMapping("/test")
 	@ResponseBody
 	public Map<String,Object> findById(HttpServletRequest request) {
@@ -36,8 +35,6 @@ public class MemberController {
 	/* 로그인 */
 	@RequestMapping("/login")
 	public String doLogin(@ModelAttribute MemberVO vo, HttpServletRequest request) {
-		System.out.println(vo);
-		
 		type = "로그인";
 		result = "실패";
 		
@@ -74,10 +71,13 @@ public class MemberController {
 	/* 회원 가입 */
 	@RequestMapping("/signup")
 	public String doSignup(@ModelAttribute MemberVO vo, HttpServletRequest request) {
-		type = "회원 가입";
-		result = "실패";
+		log.info(vo.toString());
 		
-		service.doSignup(vo);
+		type = "회원 가입";
+		result = service.doSignup(vo);
+		
+		request.setAttribute("type", type);
+		request.setAttribute("result", result);
 		
 		return "process";
 	}

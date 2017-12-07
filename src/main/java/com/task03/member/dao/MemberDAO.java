@@ -1,15 +1,17 @@
 package com.task03.member.dao;
 
-import java.util.ArrayList;
 import java.util.Collections;
-import java.util.List;
+import java.util.HashMap;
 import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.ColumnMapRowMapper;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -25,24 +27,31 @@ public class MemberDAO {
 	Logger log = LoggerFactory.getLogger(MemberController.class);
 	
 	@Autowired
-	private NamedParameterJdbcTemplate JdbcTemplate;
+	private NamedParameterJdbcTemplate jdbcTemplate;
+	private RowMapper<MemberVO> memberMapper = BeanPropertyRowMapper.newInstance(MemberVO.class);
 	
-	public List<MemberVO> doLogin(MemberVO vo) {
-		List<MemberVO> memberList = new ArrayList<>();
-		MemberVO member = new MemberVO();
+	public MemberVO doLogin(MemberVO vo) {
+		String sql = "SELECT * FROM member WHERE id = :id";
+		Map<String, String> params = Collections.singletonMap("id", vo.getId());
 		
-		member.setIdx(1);
-		member.setId("admin");
-		member.setLevel("A");
-		member.setNick("대장");
-		member.setPw("a");
-		
-		memberList.add(member);
-		return memberList;
+		return jdbcTemplate.queryForObject(sql, params, memberMapper);
 	}
 
-	public void doSignup(MemberVO vo) {
+	public int doSignup(MemberVO vo) {
+		String sql = "INSERT INTO member (id, pw, nick) VALUES (:id, :pw, :nick)";
 		
+		Map<String, String> params = new HashMap<>();
+		params.put("id", vo.getId());
+		params.put("pw", vo.getPw());
+		params.put("nick", vo.getNick());
+		
+		int num = 0;
+		try {
+			num = jdbcTemplate.update(sql, params);
+		} catch(DuplicateKeyException e) {
+		}
+
+		return num;
 	}
 	
 	public Map<String,Object> findById(String id) {
@@ -51,7 +60,7 @@ public class MemberDAO {
 		Map<String, String> params = Collections.singletonMap("id", id);
 		log.info(params.toString());
 		try {
-			result = JdbcTemplate.queryForObject(SELECT_BY_ID, params, new ColumnMapRowMapper());
+			result = jdbcTemplate.queryForObject(SELECT_BY_ID, params, new ColumnMapRowMapper());
 		} catch(EmptyResultDataAccessException e) {
 		}
 		log.info(result.toString());
