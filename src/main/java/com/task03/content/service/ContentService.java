@@ -47,4 +47,9 @@ public class ContentService {
 		return contentList;
 	}
 
+	public int getContentCount() {
+		
+		return dao.getContentCount();
+	}
+
 }

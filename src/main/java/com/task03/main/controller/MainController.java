@@ -33,9 +33,9 @@ public class MainController {
 		request.setAttribute("contentList", contentList);
 		/* 글 목록 */
 		
-		/* 댓글 목록 */
-//		List<CommentVO> commentList = service.getCommentList();
-		/* 댓글 목록 */
+		/* 글 목록 개수  */
+		int count = contentService.getContentCount();
+		/* 글 목록 개수  */
 		
 		/* 태그 목록 */
 		/* 태그 목록 */

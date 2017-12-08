@@ -48,7 +48,7 @@
 }
 
 .article {
-	width: 900px;
+	width: 1000px;
 /* 	height: 100%; */
 	padding-top: 30px;
 	display: flex;
@@ -57,7 +57,7 @@
 }
 
 .art_nav {
- 	height: 100px !important; 
+ 	height: 80px !important; 
 /* 	margin-bottom: 50px; */
 	padding: 10px;
 	display: flex;
@@ -74,6 +74,7 @@
 	width: 100%;
 	white-space: nowrap;
 	overflow: hidden;
+	padding: 10px;
 	text-overflow: ellipsis;
 	
 	/* 여러 줄 자르기 추가 스타일 */
@@ -93,6 +94,18 @@
 	justify-content: space-around;
 	align-items: center;
 /* 	border: navy solid 1px; */
+}
+
+.con_head div:nth-child(1) {
+	width: 80%;
+}
+
+.con_head div:nth-child(2) {
+	width: 10%;
+}
+
+.con_head div:nth-child(3) {
+	width: 10%;
 }
 
 .sec_comment {
@@ -117,7 +130,7 @@
 }
 
 .aside {
-	width: 400px;
+	width: 250px;
 	height: 600px;
 	display: flex;
 	flex-direction: column;

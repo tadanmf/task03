@@ -23,7 +23,6 @@ public class ContentDAO {
 	private NamedParameterJdbcTemplate jdbcTemplate;
 	private RowMapper<ContentVO> mapper = BeanPropertyRowMapper.newInstance(ContentVO.class);
 	
-	
 	public int doWrite(ContentVO vo) {
 		String sql = "INSERT INTO content (title, content, m_idx) VALUES (:title, :content, :m_idx)";
 		
@@ -35,12 +34,21 @@ public class ContentDAO {
 		return jdbcTemplate.update(sql, params);
 	}
 
-
 	public List<ContentVO> getContentList() {
 		String sql = "SELECT c.idx idx, c.title title, c.content content, c.m_idx m_idx, c.date DATE, m.id id, m.nick nick "
 						+ "FROM content c LEFT JOIN member m ON c.m_idx = m.idx ORDER BY c.idx DESC";
 		
 		return (List<ContentVO>) jdbcTemplate.query(sql, mapper);
+	}
+
+	public int getContentCount() {
+		String sql = "SELECT count(*) FROM content WHERE first_name = :name";
+		
+		Map<String, Object> params = new HashMap<>();
+		
+		int count = jdbcTemplate.queryForObject(sql, params, Integer.class);
+		
+		return 0;
 	}
 
 }
