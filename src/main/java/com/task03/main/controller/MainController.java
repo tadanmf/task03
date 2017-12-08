@@ -28,7 +28,7 @@ public class MainController {
 		/* 글 목록 */
 		List<ContentVO> contentList = service.getContentList();
 		
-		log.info(contentList.toString());
+//		log.info(contentList.toString());
 		
 		request.setAttribute("contentList", contentList);
 		/* 글 목록 */

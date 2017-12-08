@@ -25,11 +25,11 @@ public class ContentDAO {
 	
 	
 	public int doWrite(ContentVO vo) {
-		String sql = "INSERT INTO content (title, cotent, m_idx) VALUES (:title, :cotent, :m_idx)";
+		String sql = "INSERT INTO content (title, content, m_idx) VALUES (:title, :content, :m_idx)";
 		
 		Map params = new HashMap<>();
 		params.put("title", vo.getTitle());
-		params.put("cotent", vo.getContent());
+		params.put("content", vo.getContent());
 		params.put("m_idx", vo.getM_idx());
 		
 		return jdbcTemplate.update(sql, params);
@@ -37,7 +37,7 @@ public class ContentDAO {
 
 
 	public List<ContentVO> getContentList() {
-		String sql = "SELECT * FROM content";
+		String sql = "SELECT * FROM content LEFT JOIN member ON content.m_idx = member.idx ORDER BY content.idx DESC";
 		
 		return (List<ContentVO>) jdbcTemplate.query(sql, contentMapper);
 	}

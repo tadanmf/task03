@@ -6,22 +6,24 @@ public class ContentVO {
 	private int idx;
 	private String title;
 	private String content;
-	private String m_id;
-	private String m_nick;
+	private String id;
+	private String nick;
 	private int m_idx;
 	private Timestamp date;
+	private String format_date;
 	
 	public ContentVO() {}
 
-	public ContentVO(int idx, String title, String content, String m_id, String m_nick, int m_idx, Timestamp date) {
+	public ContentVO(int idx, String title, String content, String m_id, String m_nick, int m_idx, Timestamp date, String format_date) {
 		super();
 		this.idx = idx;
 		this.title = title;
 		this.content = content;
-		this.m_id = m_id;
-		this.m_nick = m_nick;
+		this.id = m_id;
+		this.nick = m_nick;
 		this.m_idx = m_idx;
 		this.date = date;
+		this.format_date = format_date;
 	}
 
 	public int getIdx() {
@@ -48,20 +50,20 @@ public class ContentVO {
 		this.content = content;
 	}
 
-	public String getM_id() {
-		return m_id;
+	public String getId() {
+		return id;
 	}
 
-	public void setM_id(String m_id) {
-		this.m_id = m_id;
+	public void setId(String m_id) {
+		this.id = m_id;
 	}
 
-	public String getM_nick() {
-		return m_nick;
+	public String getNick() {
+		return nick;
 	}
 
-	public void setM_nick(String m_nick) {
-		this.m_nick = m_nick;
+	public void setNick(String m_nick) {
+		this.nick = m_nick;
 	}
 
 	public int getM_idx() {
@@ -80,10 +82,18 @@ public class ContentVO {
 		this.date = date;
 	}
 
+	public String getFormat_date() {
+		return format_date;
+	}
+
+	public void setFormat_date(String format_date) {
+		this.format_date = format_date;
+	}
+
 	@Override
 	public String toString() {
-		return "ContentVO [idx=" + idx + ", title=" + title + ", content=" + content + ", m_id=" + m_id + ", m_nick="
-				+ m_nick + ", date=" + date + "]";
+		return "ContentVO [idx=" + idx + ", title=" + title + ", content=" + content + ", id=" + id + ", nick="
+				+ nick + ", date=" + date + "]";
 	}
 	
 }

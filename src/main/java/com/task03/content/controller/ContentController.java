@@ -24,6 +24,8 @@ public class ContentController {
 	
 	@RequestMapping("/write")
 	public String doWrite(@ModelAttribute ContentVO vo, HttpServletRequest request) {
+//		log.info(vo.toString());
+		
 		MemberVO member = (MemberVO) request.getSession().getAttribute("member");
 		vo.setM_idx(member.getIdx());
 

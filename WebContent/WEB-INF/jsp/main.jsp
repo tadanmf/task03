@@ -147,6 +147,11 @@
 			;
 		} else {
 			alert("로그인 하세요");
+			
+			$('.small.modal.login')
+			.modal({blurring: true})
+			.modal('show')
+		;
 		}
 	};
 	
@@ -239,20 +244,12 @@
 							<div class="sec_content">
 								<div class="ui vertical segment">
 									<div class="column con_head">
-										<div class="ui medium header">${ content.title }</div>
-										<div class="sub header">2017. 12. 5</div>
-										<div class="sub header">대장</div>
+										<div class="ui medium header" style="margin: 0px">${ content.title }</div>
+										<div class="sub header">${ content.format_date }</div>
+										<div class="sub header">${ content.nick }</div>
 									</div>
 									<div class="column">
-										<p>아이들의 이름과, 어머님, 때 어머님, 봄이 밤을 토끼, 있습니다. 별 계절이 이 프랑시스 위에
-											있습니다. 잔디가 하나의 우는 하나 파란 멀듯이, 아침이 이름과, 이네들은 까닭입니다. 벌써 별 밤을 자랑처럼
-											아침이 묻힌 어머님, 까닭입니다. 못 이런 차 어머니, 청춘이 듯합니다. 이름을 새워 까닭이요, 내 아침이
-											봅니다. 나의 언덕 가난한 슬퍼하는 있습니다. 다하지 내 별빛이 버리었습니다. 나의 새워 슬퍼하는 토끼,
-											자랑처럼 까닭입니다. 흙으로 헤는 밤이 하나에 거외다. 부끄러운 내 사람들의 청춘이 경, 하나에 무덤
-											까닭입니다. 자랑처럼 별 강아지, 까닭입니다. 무성할 까닭이요, 프랑시스 나의 거외다. 이제 위에 가슴속에 없이
-											나의 이름과, 봅니다. 청춘이 부끄러운 다 별빛이 때 봄이 있습니다. 쓸쓸함과 어머님, 아직 지나고 그리워 묻힌
-											어머니, 까닭입니다. 부끄러운 흙으로 어머님, 딴은 가득 속의 위에 둘 거외다. 별 차 강아지, 잔디가 별
-											봅니다.</p>
+										<p>${ content.content }</p>
 									</div>
 								</div>
 							</div>
@@ -332,7 +329,7 @@
 		    <input type="text" name="title" placeholder="제목을 입력하세요." required="required">
 		  </div>
 		  <div class="field">
-		    <textarea rows="2" placeholder="내용" required="required"></textarea>
+		    <textarea rows="2" name="content" placeholder="내용" required="required"></textarea>
 		  </div>
 		</form>
 	  </div>

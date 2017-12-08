@@ -14,6 +14,16 @@ import org.springframework.web.servlet.view.InternalResourceViewResolver;
 @ComponentScan
 public class WebConfig extends WebMvcConfigurerAdapter {
 	
+//	@Bean
+//	public CharacterEncodingFilter characterEncodingFilter() {
+//		final CharacterEncodingFilter characterEncodingFilter = new CharacterEncodingFilter();
+//		
+//		characterEncodingFilter.setEncoding("UTF-8");
+//		characterEncodingFilter.setForceEncoding(true);
+//		
+//		return characterEncodingFilter;
+//	}
+	
 	@Bean
 	public ViewResolver viewResolver() {
 		InternalResourceViewResolver resolver = new InternalResourceViewResolver();
