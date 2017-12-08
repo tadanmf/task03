@@ -4,18 +4,24 @@ import java.sql.Timestamp;
 
 public class CommentVO {
 	private int idx;
-	private String content;
+	private String comment;
+	private String nick;
 	private int m_idx;
+	private int c_idx;
 	private Timestamp date;
+	private String format_date;
 	
 	public CommentVO() {}
 	
-	public CommentVO(int idx, String content, int m_idx, Timestamp date) {
+	public CommentVO(int idx, String comment, String nick, int m_idx, int c_idx, Timestamp date ,String format_date) {
 		super();
 		this.idx = idx;
-		this.content = content;
+		this.comment = comment;
+		this.nick = nick;
 		this.m_idx = m_idx;
+		this.c_idx = c_idx;
 		this.date = date;
+		this.format_date = format_date;
 	}
 
 	public int getIdx() {
@@ -26,12 +32,20 @@ public class CommentVO {
 		this.idx = idx;
 	}
 
-	public String getContent() {
-		return content;
+	public String getComment() {
+		return comment;
 	}
 
-	public void setContent(String content) {
-		this.content = content;
+	public void setComment(String comment) {
+		this.comment = comment;
+	}
+
+	public String getNick() {
+		return nick;
+	}
+
+	public void setNick(String nick) {
+		this.nick = nick;
 	}
 
 	public int getM_idx() {
@@ -50,9 +64,26 @@ public class CommentVO {
 		this.date = date;
 	}
 
+	public int getC_idx() {
+		return c_idx;
+	}
+
+	public void setC_idx(int c_idx) {
+		this.c_idx = c_idx;
+	}
+
+	public String getFormat_date() {
+		return format_date;
+	}
+
+	public void setFormat_date(String format_date) {
+		this.format_date = format_date;
+	}
+
 	@Override
 	public String toString() {
-		return "CommentVO [idx=" + idx + ", content=" + content + ", m_idx=" + m_idx + ", date=" + date + "]";
+		return "CommentVO [idx=" + idx + ", comment=" + comment + ", nick=" + nick + ", m_idx=" + m_idx + ", c_idx="
+				+ c_idx + ", date=" + date + ", format_date=" + format_date + "]";
 	}
-	
+
 }

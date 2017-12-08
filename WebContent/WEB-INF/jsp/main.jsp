@@ -49,7 +49,7 @@
 
 .article {
 	width: 900px;
-	height: 100%;
+/* 	height: 100%; */
 	padding-top: 30px;
 	display: flex;
 	flex-direction: column;
@@ -57,12 +57,15 @@
 }
 
 .art_nav {
-	margin-bottom: 50px;
+ 	height: 100px !important; 
+/* 	margin-bottom: 50px; */
+	padding: 10px;
 	display: flex;
 	flex-direction: row;
 	justify-content: space-between;
 	align-items: center;
-/*  	border: green solid 1px;  */
+  	border: #EBEBEB solid 1px;
+  	border-radius: 10px;  
 }
 
 .sec_content p {
@@ -126,6 +129,10 @@
 	flex-direction: row;
 	justify-content: space-between;
 }
+
+.form {
+	margin-top: 1em;
+}
 .padding_10 {
 	padding: 10px;
 }
@@ -149,9 +156,9 @@
 			alert("로그인 하세요");
 			
 			$('.small.modal.login')
-			.modal({blurring: true})
-			.modal('show')
-		;
+				.modal({blurring: true})
+				.modal('show')
+			;
 		}
 	};
 	
@@ -189,9 +196,28 @@
 	function do_signup() {
 		$('#signup_form').submit();
 	}
+	
 	function do_write() {
 		$('#write_form').submit();
 	}
+	
+// 	function write_comment() {
+// // 		$('#comment_form').submit();
+// 		var params = $('#comment_form').serialize();
+		
+// 		$.ajax({
+// 			url: '${ pageContext.request.contextPath }/writeComment',
+// 			type: 'POST',
+// 			data: params,
+// 			success: function(result) {
+// 				alert(result);
+// 				console.log(result);
+// 			},
+// 			error: function() {
+// 				console.log(`TT`);
+// 			}
+// 		});
+// 	};
 </script>
 <title>__' ___</title>
 </head>
@@ -253,26 +279,29 @@
 									</div>
 								</div>
 							</div>
-							<div class="padding_10"></div>
-							<div class="sec_comment">
-								<div class="ui minimal comments">
-									<div class="comment">
-										<div class="content">
-											<a class="author">Matt</a>
-											<div class="metadata">
-												<span class="date">Today at 5:42PM</span>
-											</div>
-											<div class="text">How artistic!</div>
-										</div>
-									</div>
-									<form class="ui reply form">
-										<div class="field">
-											<textarea class="com_text" style="height: 30px !important;"></textarea>
-											<button class="ui button square">댓글 등록</button>
-										</div>
-									</form>
-								</div>
-							</div>
+<!-- 							<div class="padding_10"></div> -->
+<!-- 							<div class="sec_comment"> -->
+<!-- 								<div class="ui minimal comments"> -->
+<%-- 									<c:forEach begin="1" end="5"> --%>
+<!-- 										<div class="comment"> -->
+<!-- 											<div class="content"> -->
+<!-- 												<a class="author">Matt</a> -->
+<!-- 												<div class="metadata"> -->
+<!-- 													<span class="date">Today at 5:42PM</span> -->
+<!-- 												</div> -->
+<!-- 												<div class="text">How artistic!</div> -->
+<!-- 											</div> -->
+<!-- 										</div> -->
+<%-- 									</c:forEach> --%>
+<!-- 									<div class="ui form" id="comment_form"> -->
+<%-- 										<input type="hidden" name="c_idx" value="${ content.idx }"/> --%>
+<!-- 										<div class="field"> -->
+<!-- 											<textarea class="com_text" name="comment" style="height: 30px !important;"></textarea> -->
+<!-- 											<button class="ui button square" onclick="write_comment();">댓글 등록</button> -->
+<!-- 										</div> -->
+<!-- 									</div> -->
+<!-- 								</div> -->
+<!-- 							</div> -->
 						</div>
 					</c:forEach>
 					<div class="padding_10"></div>

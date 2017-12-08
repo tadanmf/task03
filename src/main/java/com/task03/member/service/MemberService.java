@@ -30,9 +30,7 @@ public class MemberService {
 	}
 
 	public String doSignup(MemberVO vo) {
-		
 		return dao.doSignup(vo) == 1 ? "성공" : "실패";
-		
 	}
 	
 	public Map<String,Object> findById(String id) {

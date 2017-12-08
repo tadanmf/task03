@@ -21,13 +21,13 @@ public class ContentDAO {
 	
 	@Autowired
 	private NamedParameterJdbcTemplate jdbcTemplate;
-	private RowMapper<ContentVO> contentMapper = BeanPropertyRowMapper.newInstance(ContentVO.class);
+	private RowMapper<ContentVO> mapper = BeanPropertyRowMapper.newInstance(ContentVO.class);
 	
 	
 	public int doWrite(ContentVO vo) {
 		String sql = "INSERT INTO content (title, content, m_idx) VALUES (:title, :content, :m_idx)";
 		
-		Map params = new HashMap<>();
+		Map<String, Object> params = new HashMap<>();
 		params.put("title", vo.getTitle());
 		params.put("content", vo.getContent());
 		params.put("m_idx", vo.getM_idx());
@@ -37,9 +37,10 @@ public class ContentDAO {
 
 
 	public List<ContentVO> getContentList() {
-		String sql = "SELECT * FROM content LEFT JOIN member ON content.m_idx = member.idx ORDER BY content.idx DESC";
+		String sql = "SELECT c.idx idx, c.title title, c.content content, c.m_idx m_idx, c.date DATE, m.id id, m.nick nick "
+						+ "FROM content c LEFT JOIN member m ON c.m_idx = m.idx ORDER BY c.idx DESC";
 		
-		return (List<ContentVO>) jdbcTemplate.query(sql, contentMapper);
+		return (List<ContentVO>) jdbcTemplate.query(sql, mapper);
 	}
 
 }

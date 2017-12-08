@@ -20,13 +20,13 @@ public class MainController {
 	String type, result;
 	
 	@Autowired
-	ContentService service;
+	ContentService contentService;
 	
 	@RequestMapping(path = {"/main", "/"}, method = RequestMethod.GET)
 	public String goMain(HttpServletRequest request) {
 		
 		/* 글 목록 */
-		List<ContentVO> contentList = service.getContentList();
+		List<ContentVO> contentList = contentService.getContentList();
 		
 //		log.info(contentList.toString());
 		
@@ -34,6 +34,7 @@ public class MainController {
 		/* 글 목록 */
 		
 		/* 댓글 목록 */
+//		List<CommentVO> commentList = service.getCommentList();
 		/* 댓글 목록 */
 		
 		/* 태그 목록 */

@@ -7,7 +7,6 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DuplicateKeyException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.ColumnMapRowMapper;
@@ -28,13 +27,13 @@ public class MemberDAO {
 	
 	@Autowired
 	private NamedParameterJdbcTemplate jdbcTemplate;
-	private RowMapper<MemberVO> memberMapper = BeanPropertyRowMapper.newInstance(MemberVO.class);
+	private RowMapper<MemberVO> mapper = BeanPropertyRowMapper.newInstance(MemberVO.class);
 	
 	public MemberVO doLogin(MemberVO vo) {
 		String sql = "SELECT * FROM member WHERE id = :id";
 		Map<String, String> params = Collections.singletonMap("id", vo.getId());
 		
-		return jdbcTemplate.queryForObject(sql, params, memberMapper);
+		return jdbcTemplate.queryForObject(sql, params, mapper);
 	}
 
 	public int doSignup(MemberVO vo) {
@@ -45,13 +44,7 @@ public class MemberDAO {
 		params.put("pw", vo.getPw());
 		params.put("nick", vo.getNick());
 		
-		int num = 0;
-		try {
-			num = jdbcTemplate.update(sql, params);
-		} catch(DuplicateKeyException e) {
-		}
-
-		return num;
+		return jdbcTemplate.update(sql, params);
 	}
 	
 	public Map<String,Object> findById(String id) {
