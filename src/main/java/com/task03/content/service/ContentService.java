@@ -11,17 +11,16 @@ import org.springframework.stereotype.Service;
 
 import com.task03.content.dao.ContentDAO;
 import com.task03.content.vo.ContentVO;
-import com.task03.member.controller.MemberController;
 
 @Service
 public class ContentService {
-	Logger log = LoggerFactory.getLogger(MemberController.class);
+	Logger log = LoggerFactory.getLogger(ContentService.class);
 	
 	@Autowired
 	ContentDAO dao;
 	
-	public String doWrite(ContentVO vo) {
-		return dao.doWrite(vo) == 1 ? "성공" : "실패";
+	public int doWrite(ContentVO vo) {
+		return dao.doWrite(vo);
 	}
 
 	public List<ContentVO> getContentList() {
@@ -39,6 +38,8 @@ public class ContentService {
 			
 			if(date.equals(today)) {
 				content.setFormat_date(today_df.format(content.getDate()));
+			} else {
+				content.setFormat_date(df.format(content.getDate()));
 			}
 		}
 		

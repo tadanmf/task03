@@ -9,15 +9,17 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 import com.task03.content.vo.ContentVO;
-import com.task03.member.controller.MemberController;
 
 @Repository
 public class ContentDAO {
-	Logger log = LoggerFactory.getLogger(MemberController.class);
+	Logger log = LoggerFactory.getLogger(ContentDAO.class);
 	
 	@Autowired
 	private NamedParameterJdbcTemplate jdbcTemplate;
@@ -26,12 +28,16 @@ public class ContentDAO {
 	public int doWrite(ContentVO vo) {
 		String sql = "INSERT INTO content (title, content, m_idx) VALUES (:title, :content, :m_idx)";
 		
-		Map<String, Object> params = new HashMap<>();
-		params.put("title", vo.getTitle());
-		params.put("content", vo.getContent());
-		params.put("m_idx", vo.getM_idx());
+		MapSqlParameterSource params = new MapSqlParameterSource();
+		params.addValue("title", vo.getTitle());
+		params.addValue("content", vo.getContent());
+		params.addValue("m_idx", vo.getM_idx());
+
+		KeyHolder keyHolder = new GeneratedKeyHolder();
 		
-		return jdbcTemplate.update(sql, params);
+		jdbcTemplate.update(sql, params, keyHolder);
+		
+		return keyHolder.getKey().intValue();
 	}
 
 	public List<ContentVO> getContentList() {
@@ -42,13 +48,11 @@ public class ContentDAO {
 	}
 
 	public int getContentCount() {
-		String sql = "SELECT count(*) FROM content WHERE first_name = :name";
+		String sql = "SELECT count(*) FROM content";
 		
 		Map<String, Object> params = new HashMap<>();
 		
-		int count = jdbcTemplate.queryForObject(sql, params, Integer.class);
-		
-		return 0;
+		return jdbcTemplate.queryForObject(sql, params, Integer.class);
 	}
 
 }

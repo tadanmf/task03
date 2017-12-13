@@ -1,3 +1,4 @@
+<%@page import="com.task03.tag.vo.TagVO"%>
 <%@page import="com.task03.member.vo.MemberVO"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
@@ -6,10 +7,21 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<!-- semantic-ui -->
 <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.13/semantic.min.css">
 <base>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.13/semantic.min.js"></script>
+<!-- Main Quill library -->
+<script src="//cdn.quilljs.com/1.3.4/quill.js"></script>
+
+<!-- Theme included stylesheets -->
+<link href="//cdn.quilljs.com/1.3.4/quill.snow.css" rel="stylesheet">
+<!-- <link href="//cdn.quilljs.com/1.3.4/quill.bubble.css" rel="stylesheet"> -->
+
+<!-- Core build with no theme, formatting, non-essential modules -->
+<link href="//cdn.quilljs.com/1.3.4/quill.core.css" rel="stylesheet">
+<!-- <script src="//cdn.quilljs.com/1.3.4/quill.core.js"></script> -->
 <style type="text/css">
 .wrap {
 	width: 100%;
@@ -143,6 +155,26 @@
 	justify-content: space-between;
 }
 
+.stat_content div:first-child {
+	width: 110px;
+	display: flex;
+	flex-direction: column;
+}
+
+.stat_comment div:first-child {
+	width: 130px;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+}
+
+.stat_comment div:first-child {
+	width: 130px;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+}
+
 .form {
 	margin-top: 1em;
 }
@@ -153,9 +185,30 @@
 .margin_10 {
 	margin: 10px;
 }
+
+#editor_container {
+	height: 200px;
+}
 </style>
 <script>
+
+	var quill = null;
+
 	$(document).ready(function() {
+		/* quill editor */
+		quill = new Quill('#editor_container', {
+		  modules: {
+		    toolbar: [
+		      [{ header: [1, 2, false] }],
+		      ['bold', 'italic', 'underline'],
+		      ['link', 'blockquote', 'code-block', 'image'],
+		      [{ list: 'ordered' }, { list: 'bullet' }]
+		    ]
+		  },
+		  placeholder: '내용을 입력하세요.',
+		  theme: 'snow'  // or 'bubble'
+		});
+		
 		$('.ui.dropdown').dropdown();
 	});
 	
@@ -211,6 +264,60 @@
 	}
 	
 	function do_write() {
+// 		var tag = $('#write_form #tag').val();
+// 		var list = '${ tagList }';
+// 		var list_json = '${ tagList_json }';
+// 		list = JSON.stringify(list);
+
+// 		var obj = JSON.parse(list);
+		
+// 		console.log('obj:', obj);
+		
+// 		console.log('list:', list);
+// 		console.log('list_json:', list_json);
+// 		console.log('tag:', tag);
+// 		console.log('inArray(): ', $.inArray(tag, list));
+// 		console.log('indexOf(): ', list.indexOf(tag));
+// 		console.log('typeof list:', typeof list);
+		
+// 		console.log('list_json[key]:', list_json["tag"]);
+		
+// 		console.log(list_json.indexOf(tag));
+		
+// 		var data = JSON.parse(list_json);	
+// 		var data2 = JSON.parse(list);
+		
+// 		console.log('data:', data);
+// 		console.log('data2:', data2);
+		
+// 		var index = data.map(function(e) {
+// 			return e['tag'];
+// 		}).indexOf(tag);
+		
+// 		console.log('index:', index);
+		
+// 		if((tag != '') && ($.inArray(tag, list.tag) == -1)) {
+// 			var param = { "tag": tag };
+// 			$.ajax({
+// 				url: '${ pageContext.request.contextPath }/addTag',
+// 				type: 'POST',
+// 				data: param,
+// 				seccess: function(result) {
+// 					console.log(result);
+// 				},
+// 				error: function() {
+// 					console.log('TT');
+// 				}
+// 			})
+// 		}
+		
+		console.log('quill.getContents():', quill.getContents());
+
+		var content = $('input[name=content]');
+		content.val(JSON.stringify(quill.getContents()));
+		
+		console.log('content:', content.val());
+		
 		$('#write_form').submit();
 	}
 	
@@ -256,9 +363,10 @@
 					<div class="art_nav">
 						<div class="two_per_one">
 							<button class="ui button" onclick="modal_write();">글쓰기</button>
+							<button class="ui button" onclick="location.href='${ pageContext.request.contextPath }/detail'">디테일</button>
 							<div class="ui mini horizontal statistic">
 								<div class="label" style="padding-right: 5px;">Total</div>
-								<div class="value">100</div>
+								<div class="value">${ count }</div>
 							</div>
 							<div class="ui tag label">selected</div>
 						</div>
@@ -266,7 +374,7 @@
 							<h4 class="ui header">
 								<div class="content"> 목록
 									<div class="ui inline dropdown">
-										<div class="text">10 개</div>
+										<div class="text">10</div>&nbsp;개
 										<i class="dropdown icon"></i>
 										<div class="menu">
 											<div class="active item" data-text="10">10 개</div>
@@ -292,29 +400,6 @@
 									</div>
 								</div>
 							</div>
-<!-- 							<div class="padding_10"></div> -->
-<!-- 							<div class="sec_comment"> -->
-<!-- 								<div class="ui minimal comments"> -->
-<%-- 									<c:forEach begin="1" end="5"> --%>
-<!-- 										<div class="comment"> -->
-<!-- 											<div class="content"> -->
-<!-- 												<a class="author">Matt</a> -->
-<!-- 												<div class="metadata"> -->
-<!-- 													<span class="date">Today at 5:42PM</span> -->
-<!-- 												</div> -->
-<!-- 												<div class="text">How artistic!</div> -->
-<!-- 											</div> -->
-<!-- 										</div> -->
-<%-- 									</c:forEach> --%>
-<!-- 									<div class="ui form" id="comment_form"> -->
-<%-- 										<input type="hidden" name="c_idx" value="${ content.idx }"/> --%>
-<!-- 										<div class="field"> -->
-<!-- 											<textarea class="com_text" name="comment" style="height: 30px !important;"></textarea> -->
-<!-- 											<button class="ui button square" onclick="write_comment();">댓글 등록</button> -->
-<!-- 										</div> -->
-<!-- 									</div> -->
-<!-- 								</div> -->
-<!-- 							</div> -->
 						</div>
 					</c:forEach>
 					<div class="padding_10"></div>
@@ -332,8 +417,8 @@
 					<div class="aside_tag">
 						<div class="ui segment">
 							<div class="ui header">tag</div>
-							<c:forEach begin="1" end="10" var="i">
-								<a class="ui tag label">tag ${ i }</a>
+							<c:forEach items="${ tagList }" var="tag" begin="0" end="9">
+								<a class="ui tag label">${ tag.tag }</a>
 							</c:forEach>
 						</div>
 					</div>
@@ -357,6 +442,9 @@
 							</div>
 						</div>
 					</div>
+					<div>
+						${ tagList_json[tag] }
+					</div>
 				</div>
 			</div>
 		</div>
@@ -366,12 +454,22 @@
 	  <i class="close icon"></i>
 	  <div class="header">글쓰기</div>
 	  <div class="content">
+<!-- 	  	<form> -->
+<!-- 	  		<div class="row"> -->
+<!-- 			    <input type="text" name="title" id="title" placeholder="제목을 입력하세요." required="required"> -->
+<!-- 	  		</div> -->
+<!-- 	  	</form> -->
 	  	<form class="ui form" id="write_form" method="post" action="${ pageContext.request.contextPath }/write">
 		  <div class="field">
-		    <input type="text" name="title" placeholder="제목을 입력하세요." required="required">
+		    <input type="text" name="title" id="title" placeholder="제목을 입력하세요." required="required">
 		  </div>
 		  <div class="field">
-		    <textarea rows="2" name="content" placeholder="내용" required="required"></textarea>
+		  	<input type="hidden" name="content" />
+			<div id="editor_container"></div>
+<!-- 		    <textarea rows="2" name="content" id="content" placeholder="내용을 입력하세요." required="required"></textarea> -->
+		  </div>
+		  <div class="field">
+		    <input type="text" id="tag" name="tag" placeholder="태그를 입력하세요." required="required">
 		  </div>
 		</form>
 	  </div>
