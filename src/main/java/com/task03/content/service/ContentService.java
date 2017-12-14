@@ -40,15 +40,7 @@ public class ContentService {
 	
 	/* 글 작성 */
 	public int doWrite(ContentVO vo) {
-		
-		ContentVO content = jsonParsing(vo);
-	
-		// 글 추가
-		int idx = dao.doWrite(content);
-		// 이미지 추가
-		image_dao.addImage(idx, content.getImage());
-		
-		return idx;
+		return dao.doWrite(vo);
 	}
 	
 	/* 글 목록 */

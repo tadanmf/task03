@@ -38,7 +38,7 @@ public class ContentController {
 	public String doWrite(@ModelAttribute ContentVO contentVo, @ModelAttribute TagVO tagVo, HttpServletRequest request) {
 //		log.info(vo.toString());
 		
-		log.info("/write");
+//		log.info("/write");
 		log.info(contentVo.toString());
 		
 		MemberVO member = (MemberVO) request.getSession().getAttribute("member");
