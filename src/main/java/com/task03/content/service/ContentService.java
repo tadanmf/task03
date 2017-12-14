@@ -6,6 +6,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,10 +35,16 @@ public class ContentService {
 	SimpleDateFormat today_df = new SimpleDateFormat("HH:mm");
 	SimpleDateFormat day_df = new SimpleDateFormat("YYYY-MM-dd HH:mm");
 	
+	/* 글 작성 */
 	public int doWrite(ContentVO vo) {
-		return dao.doWrite(vo);
+		
+		jsonParsing(vo);
+		
+//		return dao.doWrite(vo);
+		return 1;
 	}
-
+	
+	/* 글 목록 */
 	public List<ContentVO> getContentList(String type, int idx) {
 		List<ContentVO> contentList = dao.getContent(type, idx);
 
@@ -108,6 +116,32 @@ public class ContentService {
 		log.info(commentList.toString());
 		
 		return commentList;
+	}
+	
+	/* 에디터 데이터 parse json to string */
+	public void jsonParsing(ContentVO vo) {
+		String string_vo = vo.getContent();
+		log.info("string_vo: " + string_vo);
+		
+		JSONObject json_obj = new JSONObject(string_vo);
+		
+		log.info("json_obj: " + json_obj);
+		log.info("ops: " + json_obj.get("ops"));
+		
+		JSONArray json_arr = (JSONArray) json_obj.get("ops");
+		log.info("json_arr: " + json_arr);
+		
+		JSONObject json_content = (JSONObject) json_arr.get(0);
+		log.info("json_content: " + json_content.getString("insert"));
+		System.out.println("json_content: " + json_content);
+		
+		JSONObject json_image = (JSONObject) json_arr.get(1);
+		log.info("json_image: " + json_image);
+		System.out.println("json_image: " + json_image);
+		
+//		ContentVO content = new ContentVO();
+//		content.setContent(json_content.getString("insert"));
+//		log.info("content: " + content);
 	}
 	
 	/* 날짜 포맷 */

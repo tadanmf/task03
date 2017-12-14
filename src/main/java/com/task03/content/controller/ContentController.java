@@ -46,7 +46,7 @@ public class ContentController {
 
 		type = "글 쓰기";
 		
-//		int c_idx = service.doWrite(contentVo);
+		int c_idx = service.doWrite(contentVo);
 //		int t_idx = tagService.doWrite(tagVo);
 //		
 //		result = conTagService.doWrite(c_idx, t_idx);
