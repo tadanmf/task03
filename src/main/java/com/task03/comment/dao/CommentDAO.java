@@ -15,15 +15,16 @@ import org.springframework.stereotype.Repository;
 
 import com.task03.comment.controller.CommentController;
 import com.task03.comment.vo.CommentVO;
+import com.task03.statistic.vo.StatisticVO;
 
 @Repository
 public class CommentDAO {
 	Logger log = LoggerFactory.getLogger(CommentController.class);
-	
 
 	@Autowired
 	private NamedParameterJdbcTemplate jdbcTemplate;
 	private RowMapper<CommentVO> mapper = BeanPropertyRowMapper.newInstance(CommentVO.class);
+	private RowMapper<StatisticVO> statMapper = BeanPropertyRowMapper.newInstance(StatisticVO.class);
 
 	public int writeComment(CommentVO vo) {
 		String sql = "INSERT INTO comment (m_idx, c_idx, comment) VALUES (:m_idx, :c_idx, :comment)";
@@ -34,7 +35,6 @@ public class CommentDAO {
 		params.put("comment", vo.getComment());
 		
 		return jdbcTemplate.update(sql, params);
-
 	}
 
 	public List<CommentVO> getComment(int idx) {
@@ -43,6 +43,14 @@ public class CommentDAO {
 		Map<String, Integer> params = Collections.singletonMap("idx", idx);
 		
 		return (List<CommentVO>) jdbcTemplate.query(sql, params, mapper);
+	}
+
+	public List<StatisticVO> getStat() {
+		/* 댓글 많은 사용자 top 5 */
+		String sql = "SELECT COUNT(c.idx) `value`, m.nick `key` FROM comment c LEFT JOIN member m ON c.m_idx = m.idx" 
+					+ " WHERE c.m_idx != 2 GROUP BY c.m_idx LIMIT 5";
+		
+		return jdbcTemplate.query(sql, new HashMap<String, Object>(), statMapper); 
 	}
 
 }

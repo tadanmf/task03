@@ -53,7 +53,7 @@ public class ContentController {
 		
 		request.setAttribute("type", type);
 		request.setAttribute("result", result);
-		
+
 		return "process";
 	}
 	
@@ -72,6 +72,30 @@ public class ContentController {
 		request.setAttribute("tag", tag);
 		
 		return "detail";
+	}
+	
+	@RequestMapping("/edit")
+	public String doEdit(@ModelAttribute ContentVO vo, HttpServletRequest request) {
+		type = "글 수정";
+		result = service.doEdit(vo);
+		
+		request.setAttribute("type", type);
+		request.setAttribute("result", result);
+		
+		return "process";
+	}
+	
+	@RequestMapping("/del")
+	public String doDel(@RequestParam("idx") int idx, HttpServletRequest request) {
+		type = "글 삭제";
+		log.info("***idx: " + idx);
+		
+		result = service.doDel(idx);
+		
+		request.setAttribute("type", type);
+		request.setAttribute("result", result);
+		
+		return "process";
 	}
 
 }

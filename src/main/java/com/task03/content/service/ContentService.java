@@ -44,8 +44,8 @@ public class ContentService {
 	}
 	
 	/* 글 목록 */
-	public List<ContentVO> getContentList(String type, int idx) {
-		List<ContentVO> contentList = dao.getContent(type, idx);
+	public List<ContentVO> getContentList(String type, int idx, int listCount) {
+		List<ContentVO> contentList = dao.getContent(type, idx, listCount);
 
 		// 오늘 글이면 today_df 아니면 day_df
 		String date = "", today = "";
@@ -73,7 +73,7 @@ public class ContentService {
 	public Map<String, Object> goDetail(int idx) {
 		/* 글 내용 */
 		String type = "by_c_idx";
-		List<ContentVO> contentList = getContentList(type, idx);
+		List<ContentVO> contentList = getContentList(type, idx, 1);
 		ContentVO content = contentList.get(0);
 		/* 댓글 목록 */
 		List<CommentVO> commentList = getComment(idx);
@@ -146,6 +146,15 @@ public class ContentService {
 //		log.info("vo: " + vo);
 		
 		return vo;
+	}
+
+	public String doEdit(ContentVO vo) {
+		log.info("***vo: " + vo);
+		return dao.doEdit(vo) == 1 ? "성공" : "실패";
+	}
+
+	public String doDel(int idx) {
+		return dao.doDel(idx) == 1 ? "성공" : "실패";
 	}
 	
 	/* 날짜 포맷 */

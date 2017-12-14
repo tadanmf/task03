@@ -18,7 +18,7 @@ public class TagService {
 	TagDAO dao;
 
 	public List<TagVO> getTagList() {
-		log.info("getTagList() service"); 
+//		log.info("getTagList() service"); 
 		
 		return dao.getTagList(-1);
 	}
