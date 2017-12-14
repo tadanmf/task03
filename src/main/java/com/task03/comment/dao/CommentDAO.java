@@ -1,5 +1,6 @@
 package com.task03.comment.dao;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -35,23 +36,13 @@ public class CommentDAO {
 		return jdbcTemplate.update(sql, params);
 
 	}
-	
-	public List<CommentVO> viewComment() {
-		String sql = "SELECT * FROM comment LEFT JOIN member m ON comment.m_idx = m.idx ORDER BY comment.idx DESC";
+
+	public List<CommentVO> getComment(int idx) {
+		String sql = "SELECT * FROM comment LEFT JOIN member m ON comment.m_idx = m.idx WHERE c_idx = :idx ORDER BY comment.idx DESC";
 		
-		return (List<CommentVO>) jdbcTemplate.query(sql, mapper);
+		Map<String, Integer> params = Collections.singletonMap("idx", idx);
+		
+		return (List<CommentVO>) jdbcTemplate.query(sql, params, mapper);
 	}
-	
-//	public Map<String,Object> viewComment() {
-//		String sql = "SELECT * FROM comment LEFT JOIN member m ON comment.m_idx = m.idx ORDER BY comment.idx DESC";
-//		
-//		Map result = null;
-//		
-//		result = (Map) jdbcTemplate.query(sql, mapper);
-//		
-//		log.info("***" + result.toString());
-//		
-//		return result;
-//	}
 
 }

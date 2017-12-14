@@ -40,17 +40,30 @@ public class ContentDAO {
 		return keyHolder.getKey().intValue();
 	}
 
-	public List<ContentVO> getContentList() {
-		String sql = "SELECT c.idx idx, c.title title, c.content content, c.m_idx m_idx, c.date DATE, m.id id, m.nick nick "
-						+ "FROM content c LEFT JOIN member m ON c.m_idx = m.idx ORDER BY c.idx DESC";
+	public List<ContentVO> getContent(String type, int idx) {
+		String sql = "SELECT c.idx idx, c.title title, c.content content, c.m_idx m_idx, c.date date, m.id id, m.nick nick "
+						+ " FROM content c LEFT JOIN member m ON c.m_idx = m.idx ";
 		
-		return (List<ContentVO>) jdbcTemplate.query(sql, mapper);
+		if("by_c_idx".equals(type)) {
+			sql += " WHERE c.idx = " + idx;
+		} else if("by_t_idx".equals(type)) {
+			sql += " LEFT JOIN tag_content tc ON c.idx = tc.c_idx LEFT JOIN tag t ON tc.t_idx = t.idx WHERE t.idx = " + idx;
+		}
+		
+		sql += " ORDER BY c.idx DESC";
+		
+		return (List<ContentVO>) jdbcTemplate.query(sql, new HashMap<String, Object>(), mapper);
 	}
 
-	public int getContentCount() {
-		String sql = "SELECT count(*) FROM content";
+	public int getContentCount(int t_idx) {
+		String sql = "SELECT count(*) FROM content c";
+		
+		if(t_idx != -1) {
+			sql += " LEFT JOIN tag_content tc ON c.idx = tc.c_idx WHERE tc.t_idx = :t_idx";
+		}
 		
 		Map<String, Object> params = new HashMap<>();
+		params.put("t_idx", t_idx);
 		
 		return jdbcTemplate.queryForObject(sql, params, Integer.class);
 	}

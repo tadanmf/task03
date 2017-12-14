@@ -1,6 +1,6 @@
 package com.task03.comment.service;
 
-import java.util.List;
+import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,19 +18,18 @@ public class CommentService {
 	@Autowired
 	CommentDAO dao;
 
-	public List<CommentVO> writeComment(CommentVO vo) {
-		int num = dao.writeComment(vo);
+	public int writeComment(CommentVO vo) {
+		return dao.writeComment(vo);
+	}
+
+	public String writeComment(Map<String, Object> map) {
+		CommentVO vo = new CommentVO();
 		
-		List<CommentVO> commentList = null;
-		CommentVO comment = null;
+		vo.setC_idx(Integer.parseInt(map.get("c_idx").toString()));
+		vo.setComment(map.get("comment").toString());
+		vo.setM_idx(Integer.parseInt(map.get("m_idx").toString()));
 		
-		if(num == 1) {
-			commentList = dao.viewComment();
-		} 
-		
-		log.info(commentList.toString());
-		
-		return commentList;
+		return writeComment(vo) == 1 ? "성공" : "실패";
 	}
 
 }

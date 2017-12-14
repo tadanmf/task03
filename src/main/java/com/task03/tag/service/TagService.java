@@ -20,7 +20,7 @@ public class TagService {
 	public List<TagVO> getTagList() {
 		log.info("getTagList() service"); 
 		
-		return dao.getTagList();
+		return dao.getTagList(-1);
 	}
 
 	public int addTag(TagVO vo) {

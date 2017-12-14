@@ -62,7 +62,7 @@
 .article {
 	width: 1000px;
 /* 	height: 100%; */
-	padding-top: 30px;
+/* 	padding-top: 30px; */
 	display: flex;
 	flex-direction: column;
 /* 	border: green solid 1px; */
@@ -156,7 +156,7 @@
 }
 
 .stat_content div:first-child {
-	width: 110px;
+	width: 130px;
 	display: flex;
 	flex-direction: column;
 }
@@ -173,6 +173,10 @@
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
+}
+
+.ui.label {
+	margin: 5px;
 }
 
 .form {
@@ -195,6 +199,7 @@
 	var quill = null;
 
 	$(document).ready(function() {
+// 		alert('${ selected }');
 		/* quill editor */
 		quill = new Quill('#editor_container', {
 		  modules: {
@@ -321,23 +326,22 @@
 		$('#write_form').submit();
 	}
 	
-// 	function write_comment() {
-// // 		$('#comment_form').submit();
-// 		var params = $('#comment_form').serialize();
+	$(document).on('click', '.sec_content', function() {
+// 		console.log(this.getAttribute('data-value'));
+// 		console.log(this.dataset.value);
+// 		console.log($(this).attr('data-value'));
 		
-// 		$.ajax({
-// 			url: '${ pageContext.request.contextPath }/writeComment',
-// 			type: 'POST',
-// 			data: params,
-// 			success: function(result) {
-// 				alert(result);
-// 				console.log(result);
-// 			},
-// 			error: function() {
-// 				console.log(`TT`);
-// 			}
-// 		});
-// 	};
+		location.href = "${ pageContext.request.contextPath }/detail?idx=" + this.dataset.value;
+	});
+	
+	function content_by_tag(label) {
+// 		console.log(label);
+// 		console.log('idx:', label.dataset.idx);
+// 		console.log('tag:', label.dataset.tag);
+// 		console.log('text:', label.text);
+// 		console.log('val:', $(label).val());
+		location.href = "${ pageContext.request.contextPath }/main?t_idx=" + label.dataset.idx + "&tag=" + label.dataset.tag;
+	}
 </script>
 <title>__' ___</title>
 </head>
@@ -349,6 +353,7 @@
 					<c:choose>
 						<c:when test="${ member != null }">
 							${ member.nick } 님
+							<button class="ui button" onclick="modal_write();">글쓰기</button>
 							<button class="ui button" onclick="modal_logout();">logout</button>
 						</c:when>
 						<c:otherwise>
@@ -362,13 +367,13 @@
 				<div class="article">
 					<div class="art_nav">
 						<div class="two_per_one">
-							<button class="ui button" onclick="modal_write();">글쓰기</button>
-							<button class="ui button" onclick="location.href='${ pageContext.request.contextPath }/detail'">디테일</button>
+							<c:if test="${ selected != '' }">
+								<div class="ui tag label">${ selected }</div>
+							</c:if>
 							<div class="ui mini horizontal statistic">
 								<div class="label" style="padding-right: 5px;">Total</div>
 								<div class="value">${ count }</div>
 							</div>
-							<div class="ui tag label">selected</div>
 						</div>
 						<div class="two_per_two">
 							<h4 class="ui header">
@@ -388,7 +393,7 @@
 					</div>
 					<c:forEach items="${ contentList }" var="content" >
 						<div class="ui segment section padded vertical"  style="border-bottom: #EBEBEB solid 1px;">
-							<div class="sec_content">
+							<div class="sec_content" data-value="${ content.idx }">
 								<div class="ui vertical segment">
 									<div class="column con_head">
 										<div class="ui medium header" style="margin: 0px">${ content.title }</div>
@@ -417,8 +422,11 @@
 					<div class="aside_tag">
 						<div class="ui segment">
 							<div class="ui header">tag</div>
+							<a class="ui tag label" data-idx="${ tag.idx }" data-tag="${ tag.tag }" onclick="content_by_tag(this)">all</a>
 							<c:forEach items="${ tagList }" var="tag" begin="0" end="9">
-								<a class="ui tag label">${ tag.tag }</a>
+								<a class="ui tag label" data-idx="${ tag.idx }" data-tag="${ tag.tag }" onclick="content_by_tag(this)">
+									${ tag.tag } (${ tag.count })
+								</a>
 							</c:forEach>
 						</div>
 					</div>
@@ -441,9 +449,6 @@
 								</c:forEach>
 							</div>
 						</div>
-					</div>
-					<div>
-						${ tagList_json[tag] }
 					</div>
 				</div>
 			</div>

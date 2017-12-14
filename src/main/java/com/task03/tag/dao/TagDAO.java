@@ -25,10 +25,16 @@ public class TagDAO {
 	private NamedParameterJdbcTemplate jdbcTemplate;
 	private RowMapper<TagVO> mapper = BeanPropertyRowMapper.newInstance(TagVO.class);
 	
-	public List<TagVO> getTagList() {
-		String sql = "SELECT * FROM tag";
+	public List<TagVO> getTagList(int idx) {
+		String sql = "SELECT tc.t_idx idx, COUNT(tc.idx) count, t.tag FROM tag_content tc" 
+						+ " LEFT JOIN tag t ON tc.t_idx = t.idx"; 
 		
-		return jdbcTemplate.query(sql, new HashMap(), mapper);
+		if(idx != -1) {
+			sql += " WHERE tc.c_idx = " + idx;
+		} 
+		sql += " GROUP BY tc.t_idx ORDER BY count DESC";
+		
+		return jdbcTemplate.query(sql, new HashMap<String, Object>(), mapper);
 	}
 
 	public int addTag(TagVO vo) {
