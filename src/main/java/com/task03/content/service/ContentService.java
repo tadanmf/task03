@@ -17,6 +17,7 @@ import com.task03.comment.dao.CommentDAO;
 import com.task03.comment.vo.CommentVO;
 import com.task03.content.dao.ContentDAO;
 import com.task03.content.vo.ContentVO;
+import com.task03.image.dao.ImageDAO;
 import com.task03.tag.dao.TagDAO;
 import com.task03.tag.vo.TagVO;
 
@@ -30,6 +31,8 @@ public class ContentService {
 	CommentDAO comment_dao;
 	@Autowired
 	TagDAO tag_dao;
+	@Autowired
+	ImageDAO image_dao;
 	
 	SimpleDateFormat df = new SimpleDateFormat("YYYY-MM-dd");
 	SimpleDateFormat today_df = new SimpleDateFormat("HH:mm");
@@ -38,10 +41,14 @@ public class ContentService {
 	/* 글 작성 */
 	public int doWrite(ContentVO vo) {
 		
-		jsonParsing(vo);
+		ContentVO content = jsonParsing(vo);
+	
+		// 글 추가
+		int idx = dao.doWrite(content);
+		// 이미지 추가
+		image_dao.addImage(idx, content.getImage());
 		
-//		return dao.doWrite(vo);
-		return 1;
+		return idx;
 	}
 	
 	/* 글 목록 */
@@ -119,29 +126,35 @@ public class ContentService {
 	}
 	
 	/* 에디터 데이터 parse json to string */
-	public void jsonParsing(ContentVO vo) {
+	public ContentVO jsonParsing(ContentVO vo) {
 		String string_vo = vo.getContent();
-		log.info("string_vo: " + string_vo);
+//		log.info("string_vo: " + string_vo);
 		
 		JSONObject json_obj = new JSONObject(string_vo);
 		
 		log.info("json_obj: " + json_obj);
-		log.info("ops: " + json_obj.get("ops"));
+//		log.info("ops: " + json_obj.get("ops"));
 		
 		JSONArray json_arr = (JSONArray) json_obj.get("ops");
-		log.info("json_arr: " + json_arr);
+//		log.info("json_arr: " + json_arr);
 		
 		JSONObject json_content = (JSONObject) json_arr.get(0);
-		log.info("json_content: " + json_content.getString("insert"));
-		System.out.println("json_content: " + json_content);
+//		log.info("json_content: " + json_content.getString("insert"));
+//		System.out.println("json_content: " + json_content.getString("insert"));
 		
-		JSONObject json_image = (JSONObject) json_arr.get(1);
-		log.info("json_image: " + json_image);
-		System.out.println("json_image: " + json_image);
+		JSONObject json_data = (JSONObject) json_arr.get(1);
+//		log.info("json_data: " + json_data.get("insert"));
+//		System.out.println("json_data: " + json_data.get("insert"));
 		
-//		ContentVO content = new ContentVO();
-//		content.setContent(json_content.getString("insert"));
-//		log.info("content: " + content);
+		JSONObject json_image = (JSONObject) json_data.get("insert");
+//		log.info("json_image: " + json_image);
+		System.out.println("json_image: " + json_image.get("image").toString());
+		
+		vo.setContent(json_content.getString("insert"));
+		vo.setImage(json_image.get("image").toString());
+		log.info("vo: " + vo);
+		
+		return vo;
 	}
 	
 	/* 날짜 포맷 */

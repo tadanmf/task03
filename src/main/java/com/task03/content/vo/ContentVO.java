@@ -11,10 +11,11 @@ public class ContentVO {
 	private int m_idx;
 	private Timestamp date;
 	private String format_date;
+	private String image;
 	
 	public ContentVO() {}
 
-	public ContentVO(int idx, String title, String content, String m_id, String m_nick, int m_idx, Timestamp date, String format_date) {
+	public ContentVO(int idx, String title, String content, String m_id, String m_nick, int m_idx, Timestamp date, String format_date, String image) {
 		super();
 		this.idx = idx;
 		this.title = title;
@@ -24,6 +25,7 @@ public class ContentVO {
 		this.m_idx = m_idx;
 		this.date = date;
 		this.format_date = format_date;
+		this.image = image;
 	}
 
 	public int getIdx() {
@@ -89,11 +91,19 @@ public class ContentVO {
 	public void setFormat_date(String format_date) {
 		this.format_date = format_date;
 	}
+	
+	public String getImage() {
+		return image;
+	}
+
+	public void setImage(String image) {
+		this.image = image;
+	}
 
 	@Override
 	public String toString() {
-		return "ContentVO [idx=" + idx + ", title=" + title + ", content=" + content + ", id=" + id + ", nick="
-				+ nick + ", date=" + date + "]";
+		return "ContentVO [idx=" + idx + ", title=" + title + ", content=" + content + ", id=" + id + ", nick=" + nick
+				+ ", m_idx=" + m_idx + ", date=" + date + ", format_date=" + format_date + ", image=" + image + "]";
 	}
 	
 }
