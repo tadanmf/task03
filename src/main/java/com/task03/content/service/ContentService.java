@@ -68,7 +68,7 @@ public class ContentService {
 			}
 		}
 		
-		log.info(contentList.toString());
+//		log.info(contentList.toString());
 		
 		return contentList;
 	}
@@ -120,7 +120,7 @@ public class ContentService {
 			}
 		}
 		
-		log.info(commentList.toString());
+//		log.info(commentList.toString());
 		
 		return commentList;
 	}
@@ -131,8 +131,7 @@ public class ContentService {
 //		log.info("string_vo: " + string_vo);
 		
 		JSONObject json_obj = new JSONObject(string_vo);
-		
-		log.info("json_obj: " + json_obj);
+//		log.info("json_obj: " + json_obj);
 //		log.info("ops: " + json_obj.get("ops"));
 		
 		JSONArray json_arr = (JSONArray) json_obj.get("ops");
@@ -152,7 +151,7 @@ public class ContentService {
 		
 		vo.setContent(json_content.getString("insert"));
 		vo.setImage(json_image.get("image").toString());
-		log.info("vo: " + vo);
+//		log.info("vo: " + vo);
 		
 		return vo;
 	}

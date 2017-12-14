@@ -80,6 +80,10 @@
   	border-radius: 10px;  
 }
 
+.sec_content {
+	cursor: pointer;
+}
+
 .sec_content p {
 	/* 한 줄 자르기 */
 	display: inline-block;
@@ -105,11 +109,16 @@
 	flex-direction: row;
 	justify-content: space-around;
 	align-items: center;
+/* 	background: #f2f2f2; */
+/* 	border-radius: 10px; */
+	padding: 8px 10px;
+	border-bottom: #f2f2f2 dotted 1px;
 /* 	border: navy solid 1px; */
 }
 
 .con_head div:nth-child(1) {
 	width: 80%;
+	padding-left: 10px;
 }
 
 .con_head div:nth-child(2) {
@@ -324,7 +333,7 @@
 		console.log('content:', content.val());
 		
 		$('#write_form').submit();
-	}
+	
 	
 	$(document).on('click', '.sec_content', function() {
 // 		console.log(this.getAttribute('data-value'));

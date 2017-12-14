@@ -41,11 +41,16 @@ public class ContentDAO {
 	}
 
 	public List<ContentVO> getContent(String type, int idx) {
-		String sql = "SELECT c.idx idx, c.title title, c.content content, c.m_idx m_idx, c.date date, m.id id, m.nick nick "
-						+ " FROM content c LEFT JOIN member m ON c.m_idx = m.idx ";
+		String sql = "SELECT c.idx idx, c.title title, c.content content, c.m_idx m_idx, c.date date, m.id id, m.nick nick ";
 		
 		if("by_c_idx".equals(type)) {
-			sql += " WHERE c.idx = " + idx;
+			sql += ", i.image ";
+		}
+		
+		sql += " FROM content c LEFT JOIN member m ON c.m_idx = m.idx ";
+		
+		if("by_c_idx".equals(type)) {
+			sql += " LEFT JOIN image i ON c.idx = i.c_idx WHERE c.idx = " + idx;
 		} else if("by_t_idx".equals(type)) {
 			sql += " LEFT JOIN tag_content tc ON c.idx = tc.c_idx LEFT JOIN tag t ON tc.t_idx = t.idx WHERE t.idx = " + idx;
 		}
