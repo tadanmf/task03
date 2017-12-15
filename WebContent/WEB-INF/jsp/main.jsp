@@ -353,7 +353,7 @@
 // 			})
 // 		}
 		
-		console.log('quill.getContents():', quill.getContents());
+// 		console.log('quill.getContents():', quill.getContents());
 		
 		var content = $('input[name=content]');
 		content.val(JSON.stringify(quill.getContents()));
@@ -442,11 +442,22 @@
 					<div class="padding_10"></div>
 					<div class="paging">
 						<div>
-							<a>&lt;</a>
-							<c:forEach begin="1" end="10" var="i">
-								<a>${ i }</a>
+							<c:if test="${ page.startPage > 1 }">
+								<a href="${ pageContenxt.request.contextPath }/main?page=${ page.startPage -1 }">&lt;</a>
+							</c:if>
+							<c:forEach begin="${ page.startPage }" end="${ page.endPage }" var="i">
+								<c:choose>
+									<c:when test="${ i == page.page }">
+										<b><a href="${ pageContext.request.contextPath }/main?page=${ i }">${ i }</a></b>
+									</c:when>
+									<c:otherwise>
+										<a href="${ pageContext.request.contextPath }/main?page=${ i }">${ i }</a>
+									</c:otherwise>
+								</c:choose>
 							</c:forEach>
-							<a>&gt;</a>
+							<c:if test="${ page.endPage < page.totalPage }">
+								<a href="${ pageContenxt.request.contextPath }/main?page=${ page.endPage +1 }">&gt;</a>
+							</c:if>
 						</div>
 					</div>
 				</div>

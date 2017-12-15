@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import com.task03.content.service.ContentService;
 import com.task03.content.vo.ContentVO;
 import com.task03.main.service.MainService;
+import com.task03.page.vo.PageVO;
 import com.task03.statistic.vo.StatisticVO;
 import com.task03.tag.service.TagService;
 import com.task03.tag.vo.TagVO;
@@ -34,35 +35,27 @@ public class MainController {
 	
 	@RequestMapping(path = {"/main", "/"}, method = RequestMethod.GET)
 	public String goMain(HttpServletRequest request) {
-		/* 글 목록 */
-		String type = "";
-		int idx = -1;
-		int listCount = 10;
-		if(request.getParameter("t_idx") != null && ! ("-1".equals(request.getParameter("t_idx"))) ) {
-			type = "by_t_idx";
-			idx = Integer.parseInt(request.getParameter("t_idx"));
-		} else {
-			type = "none";
-			if(request.getParameter("listCount") != null) {
-				listCount = Integer.parseInt(request.getParameter("listCount"));
-			}
-		}
-		List<ContentVO> contentList = contentService.getContentList(type, idx, listCount);
+		/* 글 목록, 개수 */
+		Map<String, Object> contentMap = service.goMain(request.getParameter("t_idx"), request.getParameter("listCount"), request.getParameter("page"));
+		
+		List<ContentVO> contentList = (List<ContentVO>) contentMap.get("contentList");
+		PageVO page = (PageVO) contentMap.get("page");
+		int count = (int) contentMap.get("count");
+		
+		request.setAttribute("page", page);
 		request.setAttribute("contentList", contentList);
-		/* 글 목록 */
+		request.setAttribute("count", count);
+		/* 글 목록, 개수 */
 		
-		/* 글 목록 개수  */
-		int count = contentService.getContentCount(idx);
-		
+		/* 선택한 태그 */
 		String selected = "";
 		if(request.getParameter("tag") != null) {
 			selected = request.getParameter("tag");
 		}
 		log.info(selected);
 		
-		request.setAttribute("count", count);
 		request.setAttribute("selected", selected);
-		/* 글 목록 개수  */
+		/* 선택한 태그 */
 		
 		/* 태그 목록 */
 		List<TagVO> tagList = null;
@@ -71,7 +64,6 @@ public class MainController {
 		}
 		
 		log.info(tagList.toString());
-		
 		
 		JSONArray json = new JSONArray(tagList);
 		

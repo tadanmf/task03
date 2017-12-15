@@ -18,6 +18,7 @@ import com.task03.comment.vo.CommentVO;
 import com.task03.content.dao.ContentDAO;
 import com.task03.content.vo.ContentVO;
 import com.task03.image.dao.ImageDAO;
+import com.task03.page.vo.PageVO;
 import com.task03.tag.dao.TagDAO;
 import com.task03.tag.vo.TagVO;
 
@@ -45,7 +46,10 @@ public class ContentService {
 	
 	/* 글 목록 */
 	public List<ContentVO> getContentList(String type, int idx, int listCount) {
-		List<ContentVO> contentList = dao.getContent(type, idx, listCount);
+		PageVO page = new PageVO();
+		page.setCountList(listCount);
+		
+		List<ContentVO> contentList = dao.getContent(type, idx, page);
 
 		// 오늘 글이면 today_df 아니면 day_df
 		String date = "", today = "";
@@ -142,7 +146,6 @@ public class ContentService {
 		System.out.println("json_image: " + json_image.get("image").toString());
 		
 		vo.setContent(json_content.getString("insert"));
-		vo.setImage(json_image.get("image").toString());
 //		log.info("vo: " + vo);
 		
 		return vo;

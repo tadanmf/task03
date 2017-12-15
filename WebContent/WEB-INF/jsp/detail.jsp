@@ -336,7 +336,7 @@
 			</div>
 			<div class="nav">
 				<div class="two_per_one">
-					<c:if test="${ member.idx == content.m_idx }">
+					<c:if test="${ member.level == 'A' || member.idx == content.m_idx }">
 						<button class="ui button" onclick="modal_edit();">수정</button>
 						<button class="ui button" onclick="modal_del();">삭제</button>
 					</c:if>

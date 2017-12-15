@@ -17,6 +17,7 @@ import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 import com.task03.content.vo.ContentVO;
+import com.task03.page.vo.PageVO;
 import com.task03.statistic.vo.StatisticVO;
 
 @Repository
@@ -43,8 +44,11 @@ public class ContentDAO {
 		return keyHolder.getKey().intValue();
 	}
 
-	public List<ContentVO> getContent(String type, int idx, int listCount) {
-		String sql = "SELECT c.idx idx, c.title title, c.content content, c.m_idx m_idx, c.date date, m.id id, m.nick nick ";
+	public List<ContentVO> getContent(String type, int idx, PageVO page) {
+		String sql = "SELECT c.idx idx, c.title title, c.content content, c.m_idx m_idx, c.date date, m.id id, m.nick nick "
+					+ " , IF(DATE_FORMAT(c.date, '%Y-%m-%d') = DATE(NOW()), " 
+					+ " DATE_FORMAT(c.date, '%H:%i'), DATE_FORMAT(c.date, '%Y-%m-%d %H:%i')) format_date ";
+		int start = (page.getPage() - 1) * page.getCountList();
 		
 		if("by_c_idx".equals(type)) {
 			sql += ", i.image ";
@@ -58,9 +62,13 @@ public class ContentDAO {
 			sql += " LEFT JOIN tag_content tc ON c.idx = tc.c_idx LEFT JOIN tag t ON tc.t_idx = t.idx WHERE t.idx = " + idx;
 		}
 		
-		sql += " ORDER BY c.idx DESC LIMIT " + listCount;
+		sql += " ORDER BY c.idx DESC LIMIT :start, :count";
 		
-		return (List<ContentVO>) jdbcTemplate.query(sql, new HashMap<String, Object>(), mapper);
+		Map<String, Object> map = new HashMap<>();
+		map.put("start", start);
+		map.put("count", page.getCountList());
+		
+		return (List<ContentVO>) jdbcTemplate.query(sql, map, mapper);
 	}
 
 	public int getContentCount(int t_idx) {
