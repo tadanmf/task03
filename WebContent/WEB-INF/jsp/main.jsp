@@ -36,8 +36,6 @@
 }
 
 .container {
-	width: 1500px;
-	height: 900px;
 	display: flex;
 	flex-direction: column;
 	/* 	border: red solid 1px; */
@@ -48,18 +46,32 @@
 	height: 70px;
 	display: flex;
 	justify-content: flex-end;
+	z-index: 1000;
+	background-color: white;
 	/* 	border: orange solid 1px; */
 }
 
+.fixed {
+	position: fixed !important;
+	left: 0px;
+	border: red solid 1px;
+}
+
 .contents {
-	width: 100%;
+	width: 80%;
 	height: 830px;
 	display: flex;
 	flex-direction: row;
 	justify-content: space-around;
 	align-items: flex-start;
-	overflow: auto;
+	margin-top: 100px;
 	/* 	border: yellow solid 1px; */
+}
+
+.side {
+	position: fixed !important;
+	right: 50px;
+	top: 95px; 
 }
 
 .article {
@@ -68,6 +80,7 @@
 	/* 	padding-top: 30px; */
 	display: flex;
 	flex-direction: column;
+	/* overflow: auto; */
 	/* 	border: green solid 1px; */
 }
 
@@ -212,164 +225,172 @@
 	$(document).ready(function() {
 		init();
 	});
-	
+
 	function init() {
-// 		alert('${ selected }');
+		// 		alert('${ selected }');
 		/* quill editor */
 		quill = new Quill('#editor_container', {
-		  modules: {
-		    toolbar: [
-		      [{ header: [1, 2, false] }],
-		      ['bold', 'italic', 'underline'],
-		      ['link', 'blockquote', 'code-block', 'image'],
-		      [{ list: 'ordered' }, { list: 'bullet' }]
-		    ]
-		  },
-		  placeholder: '내용을 입력하세요.',
-		  theme: 'snow'  // or 'bubble'
+			modules : {
+				toolbar : [ [ {
+					header : [ 1, 2, false ]
+				} ], [ 'bold', 'italic', 'underline' ],
+						[ 'link', 'blockquote', 'code-block', 'image' ], [ {
+							list : 'ordered'
+						}, {
+							list : 'bullet'
+						} ] ]
+			},
+			placeholder : '내용을 입력하세요.',
+			theme : 'snow' // or 'bubble'
 		});
 		/* quill editor */
-		
-		$('.ui.dropdown').dropdown({
-		    action: function(text, value) {
-		    	$('.ui.dropdown').dropdown('hide');
-		    	location.href = '${ pageContext.request.contextPath }/main?listCount=' + value;
-		      }
-		    })
-		
-		$(document).on('click', '.sec_content', function() {
-//	 		console.log(this.getAttribute('data-value'));
-//	 		console.log(this.dataset.value);
-//	 		console.log($(this).attr('data-value'));
-			
-			location.href = "${ pageContext.request.contextPath }/detail?idx=" + this.dataset.value;
-		});
-		
+
+		$('.ui.dropdown')
+				.dropdown(
+						{
+							action : function(text, value) {
+								$('.ui.dropdown').dropdown('hide');
+								location.href = '${ pageContext.request.contextPath }/main?listCount='
+										+ value;
+							}
+						})
+
+		$(document)
+				.on(
+						'click',
+						'.sec_content',
+						function() {
+							//	 		console.log(this.getAttribute('data-value'));
+							//	 		console.log(this.dataset.value);
+							//	 		console.log($(this).attr('data-value'));
+
+							location.href = "${ pageContext.request.contextPath }/detail?idx="
+									+ this.dataset.value;
+						});
+
 		function by_list_count(count) {
 			alert(count);
 		}
-		
+
 		//$(document).on('change', '#by_list_count', function() {
-			//alert('asdf');
+		//alert('asdf');
 		//});
 	}
-	
+
 	function modal_write() {
-		if(<%=(MemberVO) session.getAttribute("member") != null%>) {
-			$('.small.modal.write')
-				.modal({blurring: true})
-				.modal('show')
-			;
+		if (
+<%=(MemberVO) session.getAttribute("member") != null%>
+	) {
+			$('.small.modal.write').modal({
+				blurring : true
+			}).modal('show');
 		} else {
 			alert("로그인 하세요");
-			
-			$('.small.modal.login')
-				.modal({blurring: true})
-				.modal('show')
-			;
+
+			$('.small.modal.login').modal({
+				blurring : true
+			}).modal('show');
 		}
 	};
-	
+
 	function modal_login() {
-		$('.small.modal.login')
-			.modal({blurring: true})
-			.modal('show')
-		;
+		$('.small.modal.login').modal({
+			blurring : true
+		}).modal('show');
 	};
-	
+
 	function modal_signup() {
-		$('.small.modal.signup')
-			.modal({blurring: true})
-			.modal('show')
-		;
+		$('.small.modal.signup').modal({
+			blurring : true
+		}).modal('show');
 	};
-	
+
 	function modal_logout() {
-		$('.mini.modal.logout')
-			.modal({blurring: true})
-			.modal('show')
-		;
+		$('.mini.modal.logout').modal({
+			blurring : true
+		}).modal('show');
 	};
-	
+
 	function do_login() {
 		console.log("do_login()");
-		
+
 		$('#login_form').submit();
 	}
-	
+
 	function do_logout() {
 		location.href = '${ pageContext.request.contextPath }/logout';
 	}
-	
+
 	function do_signup() {
 		$('#signup_form').submit();
 	}
-	
-	function do_write() {
-// 		var tag = $('#write_form #tag').val();
-// 		var list = '${ tagList }';
-// 		var list_json = '${ tagList_json }';
-// 		list = JSON.stringify(list);
 
-// 		var obj = JSON.parse(list);
-		
-// 		console.log('obj:', obj);
-		
-// 		console.log('list:', list);
-// 		console.log('list_json:', list_json);
-// 		console.log('tag:', tag);
-// 		console.log('inArray(): ', $.inArray(tag, list));
-// 		console.log('indexOf(): ', list.indexOf(tag));
-// 		console.log('typeof list:', typeof list);
-		
-// 		console.log('list_json[key]:', list_json["tag"]);
-		
-// 		console.log(list_json.indexOf(tag));
-		
-// 		var data = JSON.parse(list_json);	
-// 		var data2 = JSON.parse(list);
-		
-// 		console.log('data:', data);
-// 		console.log('data2:', data2);
-		
-// 		var index = data.map(function(e) {
-// 			return e['tag'];
-// 		}).indexOf(tag);
-		
-// 		console.log('index:', index);
-		
-// 		if((tag != '') && ($.inArray(tag, list.tag) == -1)) {
-// 			var param = { "tag": tag };
-// 			$.ajax({
-// 				url: '${ pageContext.request.contextPath }/addTag',
-// 				type: 'POST',
-// 				data: param,
-// 				seccess: function(result) {
-// 					console.log(result);
-// 				},
-// 				error: function() {
-// 					console.log('TT');
-// 				}
-// 			})
-// 		}
-		
-// 		console.log('quill.getContents():', quill.getContents());
-		
+	function do_write() {
+		// 		var tag = $('#write_form #tag').val();
+		// 		var list = '${ tagList }';
+		// 		var list_json = '${ tagList_json }';
+		// 		list = JSON.stringify(list);
+
+		// 		var obj = JSON.parse(list);
+
+		// 		console.log('obj:', obj);
+
+		// 		console.log('list:', list);
+		// 		console.log('list_json:', list_json);
+		// 		console.log('tag:', tag);
+		// 		console.log('inArray(): ', $.inArray(tag, list));
+		// 		console.log('indexOf(): ', list.indexOf(tag));
+		// 		console.log('typeof list:', typeof list);
+
+		// 		console.log('list_json[key]:', list_json["tag"]);
+
+		// 		console.log(list_json.indexOf(tag));
+
+		// 		var data = JSON.parse(list_json);	
+		// 		var data2 = JSON.parse(list);
+
+		// 		console.log('data:', data);
+		// 		console.log('data2:', data2);
+
+		// 		var index = data.map(function(e) {
+		// 			return e['tag'];
+		// 		}).indexOf(tag);
+
+		// 		console.log('index:', index);
+
+		// 		if((tag != '') && ($.inArray(tag, list.tag) == -1)) {
+		// 			var param = { "tag": tag };
+		// 			$.ajax({
+		// 				url: '${ pageContext.request.contextPath }/addTag',
+		// 				type: 'POST',
+		// 				data: param,
+		// 				seccess: function(result) {
+		// 					console.log(result);
+		// 				},
+		// 				error: function() {
+		// 					console.log('TT');
+		// 				}
+		// 			})
+		// 		}
+
+		// 		console.log('quill.getContents():', quill.getContents());
+
 		var content = $('input[name=content]');
 		content.val(JSON.stringify(quill.getContents()));
-		
-// 		console.log('content:', content.val());
-		
+
+		// 		console.log('content:', content.val());
+
 		$('#write_form').submit();
 	}
-	
+
 	function content_by_tag(label) {
-// 		console.log(label);
-// 		console.log('idx:', label.dataset.idx);
-// 		console.log('tag:', label.dataset.tag);
-// 		console.log('text:', label.text);
-// 		console.log('val:', $(label).val());
-		location.href = "${ pageContext.request.contextPath }/main?t_idx=" + label.dataset.idx + "&tag=" + label.dataset.tag;
+		// 		console.log(label);
+		// 		console.log('idx:', label.dataset.idx);
+		// 		console.log('tag:', label.dataset.tag);
+		// 		console.log('text:', label.text);
+		// 		console.log('val:', $(label).val());
+		location.href = "${ pageContext.request.contextPath }/main?t_idx="
+				+ label.dataset.idx + "&tag=" + label.dataset.tag;
 	};
 </script>
 <title>__' ___</title>
@@ -377,8 +398,8 @@
 <body>
 	<div class="wrap">
 		<div class="container">
-			<div class="head">
-				<div class="user">
+			<div class="head ui segment fixed">
+				<div class="user ui fluid item tabular ">
 					<c:choose>
 						<c:when test="${ member != null }">
 							${ member.nick } 님
@@ -393,6 +414,43 @@
 					</c:choose>
 				</div>
 			</div>
+			<div class="ui segment side">
+				<div class="aside right ui rail" style="left: -250px;">
+					<div class="aside_tag">
+						<div class="ui segment">
+							<div class="ui header">tag</div>
+							<a class="ui tag label" data-idx="-1" data-tag="all"
+								onclick="content_by_tag(this)">all</a>
+							<c:forEach items="${ tagList }" var="tag" begin="0" end="9">
+								<a class="ui tag label" data-idx="${ tag.idx }"
+									data-tag="${ tag.tag }" onclick="content_by_tag(this)"> ${ tag.tag }
+									(${ tag.count }) </a>
+							</c:forEach>
+						</div>
+					</div>
+					<div class="margin_10"></div>
+					<div class="aside_stat">
+						<div class="stat_content">
+							<div class="ui segment">
+								<div class="ui header">content top 5</div>
+								<c:forEach items="${ contentStatList }" var="contentStat">
+									<div class="ui label">${ contentStat.key }(${ contentStat.value })</div>
+								</c:forEach>
+							</div>
+						</div>
+						<div class="margin_10"></div>
+						<div class="stat_comment">
+							<div class="ui segment">
+								<div class="ui header">comment top 5</div>
+								<c:forEach items="${ commentStatList }" var="commentStat">
+									<div class="ui label">${ commentStat.key }(${ commentStat.value })</div>
+								</c:forEach>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
 			<div class="contents">
 				<div class="article">
 					<div class="art_nav">
@@ -410,7 +468,8 @@
 								<div class="content">
 									목록
 									<div class="ui inline dropdown">
-										<div class="text" id="by_list_count" onchange="by_list_count(this)">10</div>
+										<div class="text" id="by_list_count"
+											onchange="by_list_count(this)">10</div>
 										&nbsp;개 <i class="dropdown icon"></i>
 										<div class="menu">
 											<div class="active item" data-text="10">10 개</div>
@@ -443,55 +502,26 @@
 					<div class="paging">
 						<div>
 							<c:if test="${ page.startPage > 1 }">
-								<a href="${ pageContenxt.request.contextPath }/main?page=${ page.startPage -1 }">&lt;</a>
+								<a
+									href="${ pageContenxt.request.contextPath }/main?page=${ page.startPage -1 }">&lt;</a>
 							</c:if>
-							<c:forEach begin="${ page.startPage }" end="${ page.endPage }" var="i">
+							<c:forEach begin="${ page.startPage }" end="${ page.endPage }"
+								var="i">
 								<c:choose>
 									<c:when test="${ i == page.page }">
-										<b><a href="${ pageContext.request.contextPath }/main?page=${ i }">${ i }</a></b>
+										<b><a
+											href="${ pageContext.request.contextPath }/main?page=${ i }">${ i }</a></b>
 									</c:when>
 									<c:otherwise>
-										<a href="${ pageContext.request.contextPath }/main?page=${ i }">${ i }</a>
+										<a
+											href="${ pageContext.request.contextPath }/main?page=${ i }">${ i }</a>
 									</c:otherwise>
 								</c:choose>
 							</c:forEach>
 							<c:if test="${ page.endPage < page.totalPage }">
-								<a href="${ pageContenxt.request.contextPath }/main?page=${ page.endPage +1 }">&gt;</a>
+								<a
+									href="${ pageContenxt.request.contextPath }/main?page=${ page.endPage +1 }">&gt;</a>
 							</c:if>
-						</div>
-					</div>
-				</div>
-				<div class="aside">
-					<div class="aside_tag">
-						<div class="ui segment">
-							<div class="ui header">tag</div>
-							<a class="ui tag label" data-idx="-1"
-								data-tag="all" onclick="content_by_tag(this)">all</a>
-							<c:forEach items="${ tagList }" var="tag" begin="0" end="9">
-								<a class="ui tag label" data-idx="${ tag.idx }"
-									data-tag="${ tag.tag }" onclick="content_by_tag(this)"> ${ tag.tag }
-									(${ tag.count }) </a>
-							</c:forEach>
-						</div>
-					</div>
-					<div class="margin_10"></div>
-					<div class="aside_stat">
-						<div class="stat_content">
-							<div class="ui segment">
-								<div class="ui header">content top 5</div>
-								<c:forEach items="${ contentStatList }" var="contentStat">
-									<div class="ui label">${ contentStat.key } (${ contentStat.value })</div>
-								</c:forEach>
-							</div>
-						</div>
-						<div class="margin_10"></div>
-						<div class="stat_comment">
-							<div class="ui segment">
-								<div class="ui header">comment top 5</div>
-								<c:forEach items="${ commentStatList }" var="commentStat">
-									<div class="ui label">${ commentStat.key } (${ commentStat.value })</div>
-								</c:forEach>
-							</div>
 						</div>
 					</div>
 				</div>

@@ -81,7 +81,7 @@
 }
 
 .con_body {
-	height: 300px;
+	height: 500px;
 	padding: 10px;
 	border-bottom: #CACBCD solid 1px;
 }
@@ -211,10 +211,13 @@
 		var object_param = new Object();
 		object_param.c_idx = $('input[name=c_idx]').val();
 		object_param.comment = $('input[name=comment]').val();
-		object_param.m_idx = 2;
 		
 		if('${ member }') {
 			object_param.m_idx = '${ member.idx }';
+			object_param.nick = '${ member.nick }';
+		} else {
+			object_param.m_idx = '2';
+			object_param.nick = $('input[name=nick]').val();
 		}
 		
 		var params = JSON.stringify(object_param);
@@ -238,20 +241,44 @@
 				if(minutes < 10) minutes = '0' + minutes;
 				
 				var time = '' + hours + ':' + minutes;
-				var nick = '익명';
+				var nick = '';
+				if('${ member}') {
+					nick = '${ member.nick }';
+				} else {
+					nick = $('input[name=comment]').val();
+				}
 				
 				console.log(result);
+				console.log($('.comment').first());
+				
+				var html = '<div class="comment">'
+					+ '<div class="content">'
+					+ '<a class="author">' + $('input[name=nick]').val() + '</a>'
+					+ '<div class="metadata">'
+					+	'<span class="date">' + time + '</span>'
+					+ '</div>'
+					+ '<div class="text">' + nick + '</div>'
+					+ '</div>'
+					+ '</div>';
+				
+				if($('.comment').first().length == 0) {
+					console.log("하하");
+					$('.comments').append(html);
+				} else {
+				
 				$('.comment').first().before(
 						'<div class="comment">'
 						+ '<div class="content">'
-						+ '<a class="author">${ member.nick }</a>'
+						+ '<a class="author">' + $('input[name=nick]').val() + '</a>'
 						+ '<div class="metadata">'
 						+	'<span class="date">' + time + '</span>'
 						+ '</div>'
-						+ '<div class="text">' + $('input[name=comment]').val() + '</div>'
+						+ '<div class="text">' + nick + '</div>'
 						+ '</div>'
 						+ '</div>');
+				}
 				$('input[name=comment]').val('');
+				$('input[name=nick]').val('');
 			},
 			error: function() {
 				console.log(`TT`);
@@ -368,13 +395,16 @@
 						<input type="hidden" name="c_idx" value="${ content.idx }"/>
 						<div class="field">
 							<input type="text" name="comment" id="comment" placeholder="악플 달지 맙시다." required="required">
+							<c:if test="${ member == null }">
+								<input type="text" name="nick" placeholder="닉네임" required="required" />
+							</c:if>
 							<button class="ui button" onclick="write_comment()">등록</button>
 						</div>
 					</div>
 					<c:forEach items="${ commentList }" var="comment">
 						<div class="comment">
 							<div class="content">
-								<a class="author">${ comment.nick }</a>
+								<a class="author">${ comment._nick }</a>
 								<div class="metadata">
 									<span class="date">${ comment.format_date }</span>
 								</div>

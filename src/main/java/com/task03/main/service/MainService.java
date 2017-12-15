@@ -54,6 +54,8 @@ public class MainService {
 		/* 글 개수 */
 		int count = contentDao.getContentCount(idx);
 		
+		page.setTotalCount(count);
+		
 		Map<String, Object> map = new HashMap<>();
 		map = getContent(type, idx, page);
 		map.put("count", count);
@@ -64,9 +66,8 @@ public class MainService {
 	
 	public Map<String, Object> getContent(String type, int idx, PageVO page) {
 		/* 글 목록 조회 */
-		int totalCount = 13;
-		int totalPage = totalCount / page.getCountList();
-		if(totalCount % page.getCountList() > 0) totalPage++;
+		int totalPage = page.getTotalCount() / page.getCountList();
+		if(page.getTotalCount() % page.getCountList() > 0) totalPage++;
 		page.setTotalPage(totalPage);
 		if(page.getTotalPage() < page.getPage()) page.setPage(page.getTotalPage());
 		page.setStartPage(page.getPage() - page.getCountPage());
@@ -78,12 +79,14 @@ public class MainService {
 		
 		Map<String, Object> map = new HashMap<>();
 		
-		if("none".equals(type)) {
+		if(! "by_c_idx".equals(type)) {
 			List<ContentVO> jsonContentList = parseJson(contentList);
 			map.put("contentList", jsonContentList);
 		} else {
 			map.put("contentList", contentList);
 		}
+		
+		log.info("page: " + page);
 		
 		map.put("page", page);
 		
@@ -115,7 +118,7 @@ public class MainService {
 		List<ContentVO> contentList = new ArrayList<>();
 		for(ContentVO vo : voList) {
 			string_vo = vo.getContent();
-			log.info("string_vo: " + string_vo);
+//			log.info("string_vo: " + string_vo);
 			
 			json_obj = new JSONObject(string_vo);
 	//		log.info("json_obj: " + json_obj);
@@ -138,7 +141,7 @@ public class MainService {
 //			System.out.println("json_image: " + json_image.get("image").toString());
 			
 			vo.setContent(preview);
-			log.info("vo: " + vo);
+//			log.info("vo: " + vo);
 			
 			contentList.add(vo);
 		}

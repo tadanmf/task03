@@ -10,10 +10,11 @@ public class CommentVO {
 	private int c_idx;
 	private Timestamp date;
 	private String format_date;
+	private String _nick;
 	
 	public CommentVO() {}
 	
-	public CommentVO(int idx, String comment, String nick, int m_idx, int c_idx, Timestamp date ,String format_date) {
+	public CommentVO(int idx, String comment, String nick, int m_idx, int c_idx, Timestamp date ,String format_date, String _nick) {
 		super();
 		this.idx = idx;
 		this.comment = comment;
@@ -22,6 +23,7 @@ public class CommentVO {
 		this.c_idx = c_idx;
 		this.date = date;
 		this.format_date = format_date;
+		this._nick = _nick;
 	}
 
 	public int getIdx() {
@@ -79,11 +81,19 @@ public class CommentVO {
 	public void setFormat_date(String format_date) {
 		this.format_date = format_date;
 	}
+	
+	public String get_nick() {
+		return _nick;
+	}
+
+	public void set_nick(String _nick) {
+		this._nick = _nick;
+	}
 
 	@Override
 	public String toString() {
 		return "CommentVO [idx=" + idx + ", comment=" + comment + ", nick=" + nick + ", m_idx=" + m_idx + ", c_idx="
-				+ c_idx + ", date=" + date + ", format_date=" + format_date + "]";
+				+ c_idx + ", date=" + date + ", format_date=" + format_date + ", _nick=" + _nick + "]";
 	}
 
 }

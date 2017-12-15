@@ -7,6 +7,7 @@ public class PageVO {
 	private int totalPage;		// 총 페이지 수
 	private int startPage;		// 시작 페이지 번호
 	private int endPage;		// 마지막 페이지 번호
+	private int totalCount;	// 총 게시물 개수
 	
 	public PageVO() {
 		countList = 10;
@@ -16,13 +17,14 @@ public class PageVO {
 		startPage = 1;
 	}
 	
-	public PageVO(int countList, int countPage, int page, int totalPage, int startPage, int endPage) {
+	public PageVO(int countList, int countPage, int page, int totalPage, int startPage, int endPage, int totalCount) {
 		this.countList = countList;
 		this.countPage = countPage;
 		this.page = page;
 		this.totalPage = totalPage;
 		this.startPage = startPage;
 		this.endPage = endPage;
+		this.totalCount = totalCount;
 	}
 
 	public int getCountList() {
@@ -72,11 +74,19 @@ public class PageVO {
 	public void setEndPage(int endPage) {
 		this.endPage = endPage;
 	}
+	
+	public int getTotalCount() {
+		return totalCount;
+	}
+
+	public void setTotalCount(int totalCount) {
+		this.totalCount = totalCount;
+	}
 
 	@Override
 	public String toString() {
 		return "PageVO [countList=" + countList + ", countPage=" + countPage + ", page=" + page + ", totalPage="
-				+ totalPage + ", startPage=" + startPage + ", endPage=" + endPage + "]";
+				+ totalPage + ", startPage=" + startPage + ", endPage=" + endPage + ", totalCount=" + totalCount + "]";
 	}
-	
+
 }

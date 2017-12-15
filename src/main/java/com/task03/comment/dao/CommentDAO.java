@@ -27,18 +27,19 @@ public class CommentDAO {
 	private RowMapper<StatisticVO> statMapper = BeanPropertyRowMapper.newInstance(StatisticVO.class);
 
 	public int writeComment(CommentVO vo) {
-		String sql = "INSERT INTO comment (m_idx, c_idx, comment) VALUES (:m_idx, :c_idx, :comment)";
+		String sql = "INSERT INTO comment (m_idx, c_idx, comment, nick) VALUES (:m_idx, :c_idx, :comment, :nick)";
 		
 		Map<String, Object> params = new HashMap<>();
 		params.put("m_idx", vo.getM_idx());
 		params.put("c_idx", vo.getC_idx());
 		params.put("comment", vo.getComment());
+		params.put("nick", vo.getNick());
 		
 		return jdbcTemplate.update(sql, params);
 	}
 
 	public List<CommentVO> getComment(int idx) {
-		String sql = "SELECT * FROM comment LEFT JOIN member m ON comment.m_idx = m.idx WHERE c_idx = :idx ORDER BY comment.idx DESC";
+		String sql = "SELECT *, IFNULL(comment.nick, m.nick) AS _nick FROM comment LEFT JOIN member m ON comment.m_idx = m.idx WHERE c_idx = :idx ORDER BY comment.idx DESC";
 		
 		Map<String, Integer> params = Collections.singletonMap("idx", idx);
 		

@@ -28,6 +28,7 @@ public class CommentService {
 		vo.setC_idx(Integer.parseInt(map.get("c_idx").toString()));
 		vo.setComment(map.get("comment").toString());
 		vo.setM_idx(Integer.parseInt(map.get("m_idx").toString()));
+		vo.setNick(map.get("nick").toString());
 		
 		return writeComment(vo) == 1 ? "성공" : "실패";
 	}
