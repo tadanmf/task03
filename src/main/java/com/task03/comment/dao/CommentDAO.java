@@ -39,7 +39,10 @@ public class CommentDAO {
 	}
 
 	public List<CommentVO> getComment(int idx) {
-		String sql = "SELECT *, IFNULL(comment.nick, m.nick) AS _nick FROM comment LEFT JOIN member m ON comment.m_idx = m.idx WHERE c_idx = :idx ORDER BY comment.idx DESC";
+		String sql = "SELECT *, IFNULL(c.nick, m.nick) AS _nick "
+				+ " , IF(DATE_FORMAT(c.date, '%Y-%m-%d') = DATE(NOW()), " 
+				+ " DATE_FORMAT(c.date, '%H:%i'), DATE_FORMAT(c.date, '%Y-%m-%d %H:%i')) AS format_date "
+				+ " FROM comment AS c LEFT JOIN member AS m ON c.m_idx = m.idx WHERE c_idx = :idx ORDER BY c.idx DESC";
 		
 		Map<String, Integer> params = Collections.singletonMap("idx", idx);
 		

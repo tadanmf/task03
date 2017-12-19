@@ -1,15 +1,31 @@
 <%@page import="com.task03.member.vo.MemberVO"%>
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <!DOCTYPE html>
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <!-- semantic-ui -->
-<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.13/semantic.min.css">
+<link rel="stylesheet" type="text/css"
+	href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.13/semantic.min.css">
 <base>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.13/semantic.min.js"></script>
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.13/semantic.min.js"></script>
+
+<!-- axios -->
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<!-- lodash -->
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.4/lodash.min.js"></script>
+<!-- loglevel -->
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/loglevel/1.6.0/loglevel.min.js"></script>
+<!-- handlebars -->
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.11/handlebars.min.js"></script>
 
 <!-- Main Quill library -->
 <script src="//cdn.quilljs.com/1.3.4/quill.js"></script>
@@ -36,9 +52,9 @@
 	height: 900px;
 	display: flex;
 	flex-direction: column;
-/* 	justify-content: center; */
+	/* 	justify-content: center; */
 	align-items: center;
-/*  	border: red solid 1px;  */
+	/*  	border: red solid 1px;  */
 }
 
 .container>div {
@@ -49,14 +65,14 @@
 	height: 70px;
 	display: flex;
 	justify-content: flex-end;
-/* 	border: orange solid 1px; */
+	/* 	border: orange solid 1px; */
 }
 
 .nav {
 	display: flex;
 	flex-direction: row;
 	justify-content: space-between;
-/*  	border: blue solid 1px;  */
+	/*  	border: blue solid 1px;  */
 }
 
 .con_head {
@@ -65,7 +81,7 @@
 	justify-content: space-around;
 	align-items: center;
 	padding: 10px;
-/*  	border: red solid 1px; */
+	/*  	border: red solid 1px; */
 }
 
 .con_head div:nth-child(1) {
@@ -91,11 +107,108 @@
 	overflow: auto;
 }
 
-#comment_form > div {
+#comment_form>div {
 	display: flex;
 	flex-direction: row;
 }
 
+.loading_bar {
+	display: none;
+	width: 100%;
+	height: 100%;
+	position: absolute;
+	text-align: center;
+	background: rgba(0, 0, 0, 0.7);
+	z-index: 8000;
+}
+
+.spinner {
+	margin: 20% auto;
+	width: 40px;
+	height: 40px;
+	position: relative;
+	text-align: center;
+	-webkit-animation: sk-rotate 2.0s infinite linear;
+	animation: sk-rotate 2.0s infinite linear;
+}
+
+.dot1, .dot2 {
+	width: 60%;
+	height: 60%;
+	display: inline-block;
+	position: absolute;
+	top: 0;
+	background-color: #fff;
+	border-radius: 100%;
+	-webkit-animation: sk-bounce 2.0s infinite ease-in-out;
+	animation: sk-bounce 2.0s infinite ease-in-out;
+}
+
+.dot2 {
+	top: auto;
+	bottom: 0;
+	-webkit-animation-delay: -1.0s;
+	animation-delay: -1.0s;
+}
+
+@
+-webkit-keyframes sk-rotate { 100% {
+	-webkit-transform: rotate(360deg)
+}
+
+}
+@
+keyframes sk-rotate { 100% {
+	transform: rotate(360deg);
+	-webkit-transform: rotate(360deg)
+}
+
+}
+@
+-webkit-keyframes sk-bounce { 0%, 100% {
+	-webkit-transform: scale(0.0)
+}
+
+50%
+{
+-webkit-transform
+:
+ 
+scale
+(1
+.0
+)
+ 
+}
+}
+@
+keyframes sk-bounce { 0%, 100% {
+	transform: scale(0.0);
+	-webkit-transform: scale(0.0);
+}
+
+50%
+{
+transform
+:
+ 
+scale
+(1
+.0
+);
+
+    
+-webkit-transform
+:
+ 
+scale
+(1
+.0
+);
+
+  
+}
+}
 .padding_10 {
 	padding: 10px;
 }
@@ -103,6 +216,9 @@
 <script type="text/javascript">
 	var edit_quill = null;
 	$(document).ready(function() {
+		console.log(log);
+		log.setDefaultLevel("debug");
+		log.debug('init');
 		init();
 	});
 	
@@ -143,6 +259,69 @@
 		});
 		
 		edit_quill.setContents(json.ops);
+		
+		axios.interceptors.request.use(function (config) {
+			$('.loading_bar').show();
+			log.info('log test');
+// 			console.log('safd');
+		    // Do something before request is sent
+		    return config;
+		  }, function (error) {
+		    // Do something with request error
+		    return Promise.reject(error);
+		  });
+		
+		axios.interceptors.response.use(function (response) {
+			_.delay(function() {
+					$('.loading_bar').hide();
+				}, 1000);
+// 			console.log('3541635');
+		    // Do something with response data
+		    return response;
+		  }, function (error) {
+		    // Do something with response error
+		    return Promise.reject(error);
+		  });
+		
+		getComment();
+
+	}
+	
+	function getComment() {
+		log.debug('content.idx: ${ coidxntent.idx }');
+		var idx = '${ content.idx }';
+		log.debug('idx:', idx);
+		var param = {
+				'idx' : idx
+		}		
+		axios.get('${ pageContext.request.contextPath }/getComment?idx='+idx)
+				.then(function(response) {
+					/* comment handlebars */
+					var source = $("#comment_list").html(); 
+					//핸들바 템플릿 컴파일
+					var template = Handlebars.compile(source); 
+					
+					log.debug('template:', template);
+					
+					var comment_data = {
+							comment_list: [
+									{ _nick: "asfd", format_date: "ssss" },
+									{ _nick: "asfd", format_date: "ssss" }
+								]
+					}; 
+					
+					log.info('comment_data', comment_data);
+				
+					//핸들바 템플릿에 바인딩할 데이터
+				
+					//핸들바 템플릿에 데이터를 바인딩해서 HTML 생성
+					var html = template(comment_data);
+					
+					log.info('html:', html);
+				
+					//생성된 HTML을 DOM에 주입
+					$('.comments').append(html);
+				});
 	}
 
 	function modal_login() {
@@ -206,8 +385,74 @@
 	function do_del(idx) {
 		location.href = '${ pageContext.request.contextPath }/del?idx=' + idx;
 	}
-
+	
 	function write_comment() {
+		var object_param = new Object();
+		object_param.c_idx = $('input[name=c_idx]').val();
+		object_param.comment = $('input[name=comment]').val();
+		
+		if('${ member }') {
+			object_param.m_idx = '${ member.idx }';
+			object_param.nick = '${ member.nick }';
+		} else {
+			object_param.m_idx = '2';
+			object_param.nick = $('input[name=nick]').val();
+		}
+		
+// 		console.log('object_param:', object_param);
+		
+		axios.post('${ pageContext.request.contextPath }/writeComment', object_param)
+		  	 .then(function (response) {
+			    var now = new Date();
+				var hours = now.getHours();
+				var minutes = now.getMinutes();
+				if(hours < 10) hours = '0' + hours;
+				if(minutes < 10) minutes = '0' + minutes;
+				
+				var time = '' + hours + ':' + minutes;
+				var nick = '';
+				if('${ member}') {
+					nick = '${ member.nick }';
+				} else {
+					nick = $('input[name=comment]').val();
+				}
+				
+// 				console.log(result);
+// 				console.log($('.comment').first());
+				
+				var html = '<div class="comment">'
+					+ '<div class="content">'
+					+ '<a class="author">' + $('input[name=nick]').val() + '</a>'
+					+ '<div class="metadata">'
+					+	'<span class="date">' + time + '</span>'
+					+ '</div>'
+					+ '<div class="text">' + nick + '</div>'
+					+ '</div>'
+					+ '</div>';
+				
+				if($('.comment').first().length == 0) {
+					console.log("하하");
+					$('.comments').append(html);
+				} else {
+				
+				$('.comment').first().before(
+						'<div class="comment">'
+						+ '<div class="content">'
+						+ '<a class="author">' + $('input[name=nick]').val() + '</a>'
+						+ '<div class="metadata">'
+						+	'<span class="date">' + time + '</span>'
+						+ '</div>'
+						+ '<div class="text">' + nick + '</div>'
+						+ '</div>'
+						+ '</div>');
+				}
+				$('input[name=comment]').val('');
+				$('input[name=nick]').val('');
+		    console.log(response);
+		  })
+	}
+	
+	function write_comment2() {
 		var object_param = new Object();
 		object_param.c_idx = $('input[name=c_idx]').val();
 		object_param.comment = $('input[name=comment]').val();
@@ -346,6 +591,13 @@
 </head>
 <body>
 	<div class="wrap">
+		<!-- loading bar -->
+		<div class="loading_bar">
+			<div class="spinner">
+				<div class="dot1"></div>
+				<div class="dot2"></div>
+			</div>
+		</div>
 		<div class="container">
 			<div class="head">
 				<div class="user">
@@ -356,26 +608,29 @@
 						</c:when>
 						<c:otherwise>
 							<button class="ui left attached button" onclick="modal_login();">login</button>
-							<button class="right attached ui button" onclick="modal_signup();">signup</button>
+							<button class="right attached ui button"
+								onclick="modal_signup();">signup</button>
 						</c:otherwise>
 					</c:choose>
 				</div>
 			</div>
 			<div class="nav">
 				<div class="two_per_one">
-					<c:if test="${ member.level == 'A' || member.idx == content.m_idx }">
+					<c:if
+						test="${ member.level == 'A' || member.idx == content.m_idx }">
 						<button class="ui button" onclick="modal_edit();">수정</button>
 						<button class="ui button" onclick="modal_del();">삭제</button>
 					</c:if>
 				</div>
 				<div class="two_per_two">
-					<button class="ui button" onclick="location.href='${ pageContext.request.contextPath }/'">글목록</button>
+					<button class="ui button"
+						onclick="location.href='${ pageContext.request.contextPath }/'">글목록</button>
 				</div>
 			</div>
 			<div class="padding_10"></div>
 			<div class="column con_head">
 				<div class="ui medium header" style="margin: 0px">
-					${ content.title } 
+					${ content.title }
 					<c:if test="${ tag.tag != null }">
 						<div class="ui tag label" style="width: auto; margin-left: 20px;">${ tag.tag }</div>
 					</c:if>
@@ -384,130 +639,144 @@
 				<div class="sub header">${ content.nick }</div>
 			</div>
 			<div class="con_body" id="con_body">
-<%-- 				<p>${ content.content }</p>  --%>
-<%-- <%-- 				<img alt="" src="${ content.image }" style="width: 20%; height: auto;" onclick="image_orign('${ content.image }')"> --%>
-<%-- 				<img alt="" src="${ content.image }" width="20%" height="auto" onclick="image_orign('${ content.image }')"> --%>
+				<%-- 				<p>${ content.content }</p>  --%>
+				<%-- <%-- 				<img alt="" src="${ content.image }" style="width: 20%; height: auto;" onclick="image_orign('${ content.image }')"> --%>
+				<%-- 				<img alt="" src="${ content.image }" width="20%" height="auto" onclick="image_orign('${ content.image }')"> --%>
 			</div>
 			<div class="padding_10"></div>
 			<div class="sec_comment">
 				<div class="ui minimal comments">
 					<div class="ui form" id="comment_form">
-						<input type="hidden" name="c_idx" value="${ content.idx }"/>
+						<input type="hidden" name="c_idx" value="${ content.idx }" />
 						<div class="field">
-							<input type="text" name="comment" id="comment" placeholder="악플 달지 맙시다." required="required">
+							<input type="text" name="comment" id="comment"
+								placeholder="악플 달지 맙시다." required="required">
 							<c:if test="${ member == null }">
-								<input type="text" name="nick" placeholder="닉네임" required="required" />
+								<input type="text" name="nick" placeholder="닉네임"
+									required="required" />
 							</c:if>
 							<button class="ui button" onclick="write_comment()">등록</button>
 						</div>
 					</div>
-					<c:forEach items="${ commentList }" var="comment">
-						<div class="comment">
-							<div class="content">
-								<a class="author">${ comment._nick }</a>
-								<div class="metadata">
-									<span class="date">${ comment.format_date }</span>
-								</div>
-								<div class="text">${ comment.comment }</div>
+					<script id="comment_list" type="text/x-handlebars-template">
+					<div class="comment">
+						<div class="content">
+							{{#comment_list}}
+							<a class="author">{{_nick}}</a>
+							<div class="metadata">
+								<span class="date">{{format_date}}</span>
 							</div>
+							<div class="text">{{comment}}</div>
+							{{/comment_list}}
 						</div>
-					</c:forEach>
+					</div>
+					</script>
 				</div>
-			</div>			
+			</div>
 		</div>
 		<!-- 글 수정 모달 -->
 		<div class="ui modal small edit">
-		  <i class="close icon"></i>
-		  <div class="header">글 수정</div>
-		  <div class="content">
-	<!-- 	  	<form> -->
-	<!-- 	  		<div class="row"> -->
-	<!-- 			    <input type="text" name="title" id="title" placeholder="제목을 입력하세요." required="required"> -->
-	<!-- 	  		</div> -->
-	<!-- 	  	</form> -->
-		  	<form class="ui form" id="edit_form" method="post" action="${ pageContext.request.contextPath }/edit">
-			  <div class="field">
-			    <input type="text" name="title" id="title" placeholder="제목을 입력하세요." required="required" value=${ content.title }>
-			  </div>
-			  <div class="field">
-			  	<input type="hidden" name="content" />
-			  	<input type="hidden" name="idx" value="${ content.idx }" />
-				<div id="editor_container"></div>
-	<!-- 		    <textarea rows="2" name="content" id="content" placeholder="내용을 입력하세요." required="required"></textarea> -->
-			  </div>
-			  <div class="field">
-			    <input type="text" id="tag" name="tag" placeholder="태그를 입력하세요." required="required" value="${ tag.tag }" disabled="disabled">
-			  </div>
-			</form>
-		  </div>
-		  <div class="actions">
-		    <div class="ui black deny button" onclick="do_edit();">수정</div>
-		  </div>
+			<i class="close icon"></i>
+			<div class="header">글 수정</div>
+			<div class="content">
+				<!-- 	  	<form> -->
+				<!-- 	  		<div class="row"> -->
+				<!-- 			    <input type="text" name="title" id="title" placeholder="제목을 입력하세요." required="required"> -->
+				<!-- 	  		</div> -->
+				<!-- 	  	</form> -->
+				<form class="ui form" id="edit_form" method="post"
+					action="${ pageContext.request.contextPath }/edit">
+					<div class="field">
+						<input type="text" name="title" id="title"
+							placeholder="제목을 입력하세요." required="required"
+							value=${ content.title }>
+					</div>
+					<div class="field">
+						<input type="hidden" name="content" /> <input type="hidden"
+							name="idx" value="${ content.idx }" />
+						<div id="editor_container"></div>
+						<!-- 		    <textarea rows="2" name="content" id="content" placeholder="내용을 입력하세요." required="required"></textarea> -->
+					</div>
+					<div class="field">
+						<input type="text" id="tag" name="tag" placeholder="태그를 입력하세요."
+							required="required" value="${ tag.tag }" disabled="disabled">
+					</div>
+				</form>
+			</div>
+			<div class="actions">
+				<div class="ui black deny button" onclick="do_edit();">수정</div>
+			</div>
 		</div>
 		<!-- 글 수정 모달 -->
 		<!-- 로그인 모달 -->
 		<div class="ui modal small login">
-		  <i class="close icon"></i>
-		  <div class="header">로그인</div>
-		  <div class="content">
-		  	<form class="ui form" id="login_form" method="post" action="${ pageContext.request.contextPath }/login">
-			  <div class="field">
-			    <input type="text" name="id" placeholder="아이디를 입력하세요." required="required">
-			  </div>
-			  <div class="field">
-			    <input type="password" name="pw" placeholder="비밀번호를 입력하세요." required="required">
-			  </div>
-			</form>
-		  </div>
-		  <div class="actions">
-		    <div class="ui black deny button" onclick="do_login();">로그인</div>
-		  </div>
+			<i class="close icon"></i>
+			<div class="header">로그인</div>
+			<div class="content">
+				<form class="ui form" id="login_form" method="post"
+					action="${ pageContext.request.contextPath }/login">
+					<div class="field">
+						<input type="text" name="id" placeholder="아이디를 입력하세요."
+							required="required">
+					</div>
+					<div class="field">
+						<input type="password" name="pw" placeholder="비밀번호를 입력하세요."
+							required="required">
+					</div>
+				</form>
+			</div>
+			<div class="actions">
+				<div class="ui black deny button" onclick="do_login();">로그인</div>
+			</div>
 		</div>
 		<!-- 로그인 모달 -->
 		<!-- 가입 모달 -->
 		<div class="ui modal small signup">
-		  <i class="close icon"></i>
-		  <div class="header">가입</div>
-		  <div class="content">
-		  	<form class="ui form" id="signup_form" method="post" action="${ pageContext.request.contextPath }/signup">
-			  <div class="field">
-			    <input type="text" name="id" placeholder="아이디를 입력하세요." required="required">
-			  </div>
-			  <div class="field">
-			    <input type="text" name="pw" placeholder="비밀번호를 입력하세요." required="required">
-			  </div>
-			  <div class="field">
-			    <input type="text" name="nick" placeholder="닉네임을 입력하세요." required="required">
-			  </div>
-			</form>
-		  </div>
-		  <div class="actions">
-		    <div class="ui black deny button" onclick="do_signup();">가입</div>
-		  </div>
+			<i class="close icon"></i>
+			<div class="header">가입</div>
+			<div class="content">
+				<form class="ui form" id="signup_form" method="post"
+					action="${ pageContext.request.contextPath }/signup">
+					<div class="field">
+						<input type="text" name="id" placeholder="아이디를 입력하세요."
+							required="required">
+					</div>
+					<div class="field">
+						<input type="text" name="pw" placeholder="비밀번호를 입력하세요."
+							required="required">
+					</div>
+					<div class="field">
+						<input type="text" name="nick" placeholder="닉네임을 입력하세요."
+							required="required">
+					</div>
+				</form>
+			</div>
+			<div class="actions">
+				<div class="ui black deny button" onclick="do_signup();">가입</div>
+			</div>
 		</div>
 		<!-- 가입 모달 -->
 		<!-- 로그아웃 모달 -->
-<!-- 		<div class="ui modal mini logout"> -->
-<!-- 		  <i class="close icon"></i> -->
-<!-- 		  <div class="header">로그아웃</div> -->
-<!-- 		  <div class="content"> -->
-<!-- 		  	정말 로그아웃 하시겠습니까 -->
-<!-- 		  </div> -->
-<!-- 		  <div class="actions"> -->
-<!-- 		    <div class="ui black deny button" onclick="do_logout();">네</div> -->
-<!-- 		  </div> -->
-<!-- 		</div> -->
+		<!-- 		<div class="ui modal mini logout"> -->
+		<!-- 		  <i class="close icon"></i> -->
+		<!-- 		  <div class="header">로그아웃</div> -->
+		<!-- 		  <div class="content"> -->
+		<!-- 		  	정말 로그아웃 하시겠습니까 -->
+		<!-- 		  </div> -->
+		<!-- 		  <div class="actions"> -->
+		<!-- 		    <div class="ui black deny button" onclick="do_logout();">네</div> -->
+		<!-- 		  </div> -->
+		<!-- 		</div> -->
 		<!-- 로그아웃 모달 -->
 		<!-- 글 삭제 모달 -->
 		<div class="ui modal mini del">
-		  <i class="close icon"></i>
-		  <div class="header">글 삭제</div>
-		  <div class="content">
-		  	정말 삭제 하시겠습니까
-		  </div>
-		  <div class="actions">
-		    <div class="ui black deny button" onclick="do_del(${ content.idx });">네</div>
-		  </div>
+			<i class="close icon"></i>
+			<div class="header">글 삭제</div>
+			<div class="content">정말 삭제 하시겠습니까</div>
+			<div class="actions">
+				<div class="ui black deny button"
+					onclick="do_del(${ content.idx });">네</div>
+			</div>
 		</div>
 		<!-- 글 삭제 모달 -->
 	</div>
