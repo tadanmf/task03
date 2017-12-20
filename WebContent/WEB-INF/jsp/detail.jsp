@@ -123,92 +123,54 @@
 }
 
 .spinner {
-	margin: 20% auto;
-	width: 40px;
-	height: 40px;
-	position: relative;
-	text-align: center;
-	-webkit-animation: sk-rotate 2.0s infinite linear;
-	animation: sk-rotate 2.0s infinite linear;
+  margin: 350px auto;
+  width: 40px;
+  height: 40px;
+  position: relative;
+  text-align: center;
+  
+  -webkit-animation: sk-rotate 2.0s infinite linear;
+  animation: sk-rotate 2.0s infinite linear;
 }
 
 .dot1, .dot2 {
-	width: 60%;
-	height: 60%;
-	display: inline-block;
-	position: absolute;
-	top: 0;
-	background-color: #fff;
-	border-radius: 100%;
-	-webkit-animation: sk-bounce 2.0s infinite ease-in-out;
-	animation: sk-bounce 2.0s infinite ease-in-out;
+  width: 60%;
+  height: 60%;
+  display: inline-block;
+  position: absolute;
+  top: 0;
+  background-color: #fff;
+  border-radius: 100%;
+  
+  -webkit-animation: sk-bounce 2.0s infinite ease-in-out;
+  animation: sk-bounce 2.0s infinite ease-in-out;
 }
 
 .dot2 {
-	top: auto;
-	bottom: 0;
-	-webkit-animation-delay: -1.0s;
-	animation-delay: -1.0s;
+  top: auto;
+  bottom: 0;
+  -webkit-animation-delay: -1.0s;
+  animation-delay: -1.0s;
 }
 
-@
--webkit-keyframes sk-rotate { 100% {
-	-webkit-transform: rotate(360deg)
+@-webkit-keyframes sk-rotate { 100% { -webkit-transform: rotate(360deg) }}
+@keyframes sk-rotate { 100% { transform: rotate(360deg); -webkit-transform: rotate(360deg) }}
+
+@-webkit-keyframes sk-bounce {
+  0%, 100% { -webkit-transform: scale(0.0) }
+  50% { -webkit-transform: scale(1.0) }
 }
 
-}
-@
-keyframes sk-rotate { 100% {
-	transform: rotate(360deg);
-	-webkit-transform: rotate(360deg)
-}
-
-}
-@
--webkit-keyframes sk-bounce { 0%, 100% {
-	-webkit-transform: scale(0.0)
+@keyframes sk-bounce {
+  0%, 100% { 
+    transform: scale(0.0);
+    -webkit-transform: scale(0.0);
+  } 50% { 
+    transform: scale(1.0);
+    -webkit-transform: scale(1.0);
+  }
 }
 
-50%
-{
--webkit-transform
-:
- 
-scale
-(1
-.0
-)
- 
-}
-}
-@
-keyframes sk-bounce { 0%, 100% {
-	transform: scale(0.0);
-	-webkit-transform: scale(0.0);
-}
-
-50%
-{
-transform
-:
- 
-scale
-(1
-.0
-);
-
-    
--webkit-transform
-:
- 
-scale
-(1
-.0
-);
-
-  
-}
-}
 .padding_10 {
 	padding: 10px;
 }
@@ -303,13 +265,19 @@ scale
 					
 					log.debug('template:', template);
 					
+					var result = response.data;
+					var comment_list =  [];
+					var item = {};
+					for(var i = 1 ; i<= result.length ; i++) {
+						var vo = result[i-1];
+						item = {
+							_nick: vo._nick, format_date: vo.format_date, comment: vo.comment
+						} 
+						comment_list.push(item);
+					}
 					var comment_data = {
-							comment_list: [
-									{ _nick: "asfd", format_date: "ssss" },
-									{ _nick: "asfd", format_date: "ssss" }
-								]
-					}; 
-					
+							comment_list : comment_list
+					};
 					log.info('comment_data', comment_data);
 				
 					//핸들바 템플릿에 바인딩할 데이터
@@ -614,6 +582,7 @@ scale
 					</c:choose>
 				</div>
 			</div>
+			<div class="padding_10"></div>
 			<div class="nav">
 				<div class="two_per_one">
 					<c:if
